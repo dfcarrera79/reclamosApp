@@ -1,12 +1,14 @@
-<template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
-    <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
+<script setup lang="ts"></script>
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
+<template>
+  <div
+    class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center"
+  >
+    <div>
+      <div style="font-size: 30vh">404</div>
+
+      <div class="text-h2" style="font-family: 'Bebas Neue'; opacity: 0.4">
+        PÁGINA NO ENCONTRADA
       </div>
 
       <q-btn
@@ -14,14 +16,10 @@
         color="white"
         text-color="blue"
         unelevated
-        to="/"
-        label="Go Home"
+        to="/editar_reclamo"
+        label="Regresar a Reclamos App"
         no-caps
       />
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-
-</script>

@@ -1,43 +1,98 @@
+<script setup lang="ts">
+import { provide, ref } from 'vue';
+import DrawerDesktop from './DrawerDesktop.vue';
+import DrawerMobile from './DrawerMobile.vue';
+import { LocalStorage, useQuasar } from 'quasar';
+import { useAppStore } from '../stores/useAppStore';
+
+// Data
+const $q = useQuasar();
+$q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });
+const appStore = useAppStore();
+const win: Window = window;
+// const miniState = ref(true);
+
+// Methods
+const cerrarSesion = () => {
+  win.location = 'https://apromedloja.com/';
+  LocalStorage.clear();
+};
+
+const leftDrawerOpen = ref(false);
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
+
+/* provided variables */
+provide('leftDrawerOpen', leftDrawerOpen);
+</script>
+
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+  <q-layout view="hHh lpR fFf">
+    <q-header class="text-grey-9" style="background-color: #636466">
+      <q-toolbar class="fit row wrap justify-between items-start content-start">
+        <div class="row">
+          <q-btn
+            dense
+            flat
+            round
+            style="color: #ee7600"
+            icon="menu"
+            @click="toggleLeftDrawer"
+          />
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+          <q-toolbar-title
+            class="gt-xs text-h4 row"
+            style="font-family: 'Bebas Neue'; color: #ee7600"
+          >
+            <div
+              class="q-mr-md"
+              v-if="appStore.appCodigo === 1 || appStore.appCodigo === 2"
+            >
+              RECLAMOS APP V{{ appStore.appVersion }}
+            </div>
+            <div
+              class="q-mr-md"
+              v-if="appStore.appCodigo === 3 || appStore.appCodigo === 4"
+            >
+              DOCUMENTOS APP V{{ appStore.appVersion }}
+            </div>
+            <q-separator vertical inset />
+            <div class="q-ml-md gt-xs">Apromed S.A.S.</div>
+          </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+          <q-toolbar-title
+            class="xs text-h5 row"
+            style="font-family: 'Bebas Neue'; color: #ee7600"
+          >
+            <div
+              class="q-mr-md"
+              v-if="appStore.appCodigo === 1 || appStore.appCodigo === 2"
+            >
+              RECLAMOS APP V{{ appStore.appVersion }}
+            </div>
+            <div
+              class="q-mr-md"
+              v-if="appStore.appCodigo === 3 || appStore.appCodigo === 4"
+            >
+              DOCUMENTOS APP V{{ appStore.appVersion }}
+            </div>
+            <q-separator vertical inset />
+            <div class="q-ml-md gt-xs">Apromed S.A.S.</div>
+          </q-toolbar-title>
+        </div>
+
+        <div class="row items-center content-center q-mr-md">
+          <q-btn flat dense style="color: #ee7600" @click="cerrarSesion">
+            <div class="q-mr-sm gt-xs">Salir</div>
+            <q-icon left name="logout" />
+          </q-btn>
+        </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+    <DrawerDesktop class="gt-xs" />
+    <DrawerMobile class="xs" />
 
     <q-page-container>
       <router-view />
@@ -45,58 +100,9 @@
   </q-layout>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
-
-const essentialLinks: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+<style lang="scss">
+.my-menu-link {
+  color: white;
+  background: #ee7600;
 }
-</script>
+</style>
