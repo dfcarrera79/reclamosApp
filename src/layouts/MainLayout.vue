@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { provide, ref } from 'vue';
-import DrawerDesktop from './DrawerDesktop.vue';
-import DrawerMobile from './DrawerMobile.vue';
 import { LocalStorage, useQuasar } from 'quasar';
+import DrawerDesktop from '../components/DrawerDesktop.vue';
+import DrawerMobile from '../components/DrawerMobile.vue';
 import { useAppStore } from '../stores/useAppStore';
 
 // Data

@@ -272,7 +272,6 @@ export interface SessionData {
   estaLogeado: boolean;
   appCodigo: number;
   appVersion: string;
-  local: boolean;
   currentURL: string;
 }
 

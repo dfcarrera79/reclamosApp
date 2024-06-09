@@ -88,11 +88,15 @@ const funcionIr = () => {
 
 onMounted(async () => {
   appStore.appCodigo = 2;
-  if (appStore.local) {
-    appStore.setUrlApi('http://192.168.1.50:3009/v1/reclamos');
-  } else {
-    appStore.setUrlApi(process.env.API_URL);
-  }
+
+  appStore.setUrlApi(process.env.API_URL);
+  // appStore.setUrlApi('http://192.168.1.50:3009/v1/reclamos');
+
+  // if (appStore.local) {
+  //   appStore.setUrlApi('http://192.168.1.50:3009/v1/reclamos');
+  // } else {
+  //   appStore.setUrlApi(process.env.API_URL);
+  // }
 
   const respuesta = await get('/usuario/obtenerVersion', {});
 
@@ -105,8 +109,7 @@ onMounted(async () => {
 
   if (session) {
     appStore.appCodigo = session.appCodigo;
-    appStore.iniciarSession(session.usuario, session.local);
-
+    appStore.iniciarSession(session.usuario);
     router.push(newUrl.value);
   }
 });
@@ -151,7 +154,7 @@ const logearse = async () => {
     mostrarMensaje('Error', respuesta.mensaje);
     return;
   }
-  appStore.iniciarSession(respuesta.objetos, appStore.local);
+  appStore.iniciarSession(respuesta.objetos);
 
   switch (appStore.appCodigo) {
     case appStore.APP_CLIENTE:
@@ -293,13 +296,6 @@ const enviarCorreoRecuperacion = async () => {
           label="Conexión local"
           size="sm"
           @click="funcionIr"
-        />
-
-        <q-toggle
-          v-model="appStore.local"
-          checked-icon="check"
-          color="primary"
-          unchecked-icon="clear"
         />
       </div>
 
