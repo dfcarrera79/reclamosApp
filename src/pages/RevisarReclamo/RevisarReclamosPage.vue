@@ -12,6 +12,7 @@ import RevisarData from './RevisarData.vue';
 import { useAxios } from '../../services/useAxios';
 import { useAppStore } from '../../stores/useAppStore';
 import VerificarVersion from '../VerificarVersionPage.vue';
+import ArchivoDialog from '../../components/ArchivoDialog.vue';
 import DetalleRevisarReclamo from './DetalleRevisarReclamo.vue';
 import DetalleRevisarReclamoMovil from './DetalleRevisarReclamoMovil.vue';
 
@@ -143,50 +144,7 @@ watch(query, () => whichQuery());
         v-model:filas="filas"
       />
     </div>
-    <div class="q-pa-md q-gutter-sm">
-      <q-dialog v-model="alert">
-        <q-card>
-          <q-card-section>
-            <div
-              class="text-left text-h6 text-grey-8"
-              style="font-family: 'Bebas Neue'"
-            >
-              <strong>ARCHIVOS:</strong>
-            </div>
-          </q-card-section>
-          <q-card-section class="q-pt-none">
-            <div v-if="fotos.length >= 1">
-              <div v-for="(foto, index) in fotos" :key="index">
-                <img
-                  class="q-ma-sm"
-                  :src="
-                    foto.path.replace(
-                      'C:\\Users\\dfcar\\Dropbox\\Developer\\Projects\\Reclamos\\fastapi_reclamos\\public\\imagenes_reclamos\\',
-                      'http://localhost:8000/static/'
-                    )
-                  "
-                  style="max-height: 500px; max-width: 500px"
-                />
-                <q-separator inset />
-              </div>
-            </div>
-            <div v-else>Ningún archivo adjunto</div>
-          </q-card-section>
-
-          <q-card-actions align="right">
-            <q-btn
-              flat
-              label="Cerrar"
-              color="primary"
-              @click="
-                alert = false;
-                fotos = [];
-              "
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-    </div>
+    <ArchivoDialog v-model:alert="alert" v-model:fotos="fotos" />
   </q-page>
 </template>
 

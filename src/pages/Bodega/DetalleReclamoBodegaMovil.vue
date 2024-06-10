@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import DialogoEstado from './DialogoEstado.vue';
-import ArchivoDialog from './ArchivoDialog.vue';
 import { useAxios } from '../../services/useAxios';
 import { computed, nextTick, ref, watch } from 'vue';
 import { useAppStore } from '../../stores/useAppStore';
 import { procesarObjetos } from '../../services/useUtils';
 import { useBodegaStore } from '../../stores/useBodegaStore';
+import ArchivoDialog from '../../components/ArchivoDialog.vue';
 import {
   columnasVisibles,
   columnasDetalleReclamo,

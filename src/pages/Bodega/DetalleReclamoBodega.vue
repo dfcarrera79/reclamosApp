@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import DialogoEstado from './DialogoEstado.vue';
-import ArchivoDialog from './ArchivoDialog.vue';
 import { useAxios } from '../../services/useAxios';
 import { useAppStore } from '../../stores/useAppStore';
 import { procesarObjetos } from '../../services/useUtils';
 import { useBodegaStore } from '../../stores/useBodegaStore';
+import ArchivoDialog from '../../components/ArchivoDialog.vue';
 import {
   columnasVisibles,
   columnasDetalleReclamo,
@@ -35,9 +35,7 @@ const bodegaStore = useBodegaStore();
 const filas = ref<Filas[]>([]);
 const fotos = ref<Archivo[]>([]);
 const newFilas = ref<Filas[]>([]);
-// const path = process.env.IMAGE_PATH;
 const visibleColumns = ref<string[]>([]);
-const replacedPath = ref('');
 
 const pagination = ref({
   sortBy: 'desc',
@@ -125,11 +123,7 @@ const pagesNumber = computed(() => {
 </script>
 
 <template>
-  <ArchivoDialog
-    v-model:alert="alert"
-    v-model:fotos="fotos"
-    v-model:replacedPath="replacedPath"
-  />
+  <ArchivoDialog v-model:alert="alert" v-model:fotos="fotos" />
 
   <DialogoEstado />
 

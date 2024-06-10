@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Archivo } from '../../components/models';
+import { Archivo } from './models';
 
 // Data
 const path = ref<string>(process.env.IMAGE_PATH ?? '');
 const alert = defineModel<boolean>('alert', { required: true });
+const replacedPath = ref<string>(process.env.REPLACED_PATH ?? '');
 const fotos = defineModel<Archivo[]>('fotos', { required: true });
-const replacedPath = defineModel<string>('replacedPath', { required: true });
 </script>
 
 <template>
