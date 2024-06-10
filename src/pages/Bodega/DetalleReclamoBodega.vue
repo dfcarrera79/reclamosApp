@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue';
 import DialogoEstado from './DialogoEstado.vue';
+import ArchivoDialog from './ArchivoDialog.vue';
 import { useAxios } from '../../services/useAxios';
-import { computed, onMounted, ref, watch } from 'vue';
 import { useAppStore } from '../../stores/useAppStore';
 import { procesarObjetos } from '../../services/useUtils';
 import { useBodegaStore } from '../../stores/useBodegaStore';
@@ -34,9 +35,8 @@ const bodegaStore = useBodegaStore();
 const filas = ref<Filas[]>([]);
 const fotos = ref<Archivo[]>([]);
 const newFilas = ref<Filas[]>([]);
-const path = process.env.IMAGE_PATH;
+// const path = process.env.IMAGE_PATH;
 const visibleColumns = ref<string[]>([]);
-// const replacedPath = process.env.REPLACED_PATH;
 const replacedPath = ref('');
 
 const pagination = ref({
@@ -122,57 +122,14 @@ const estadosFiltrados = ref(filtro);
 const pagesNumber = computed(() => {
   return Math.ceil(appStore.numFilas / pagination.value.rowsPerPage);
 });
-
-onMounted(() => {
-  if (appStore.local) {
-    replacedPath.value = 'http://192.168.1.50:3009/static/';
-  } else {
-    replacedPath.value = 'https://apromedfarmaloja-cloud.com:3010/static/';
-  }
-});
 </script>
 
 <template>
-  <div class="q-pa-md q-gutter-sm">
-    <q-dialog v-model="alert">
-      <q-card>
-        <q-card-section>
-          <div
-            class="text-left text-h6 text-grey-8"
-            style="font-family: 'Bebas Neue'"
-          >
-            <strong>ARCHIVOS:</strong>
-          </div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <div v-if="fotos.length >= 1">
-            <div v-for="(foto, index) in fotos" :key="index">
-              <img
-                class="q-ma-sm"
-                :src="foto.path.replace(path as string, replacedPath as string)"
-                style="max-height: 500px; max-width: 500px"
-              />
-              <q-separator inset />
-            </div>
-          </div>
-          <div v-else>Ningún archivo adjunto</div>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cerrar"
-            color="primary"
-            @click="
-              alert = false;
-              fotos = [];
-            "
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-  </div>
+  <ArchivoDialog
+    v-model:alert="alert"
+    v-model:fotos="fotos"
+    v-model:replacedPath="replacedPath"
+  />
 
   <DialogoEstado />
 
@@ -358,14 +315,5 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.my-card {
-  width: 100%;
-  max-width: 350px;
-}
-
-p {
-  word-break: break-all;
-  white-space: normal;
-}
 @import '../../css/sticky.header.table.scss';
 </style>

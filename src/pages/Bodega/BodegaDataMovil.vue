@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, computed, watch } from 'vue';
-import { useAxios } from '../../services/useAxios';
-import { useAppStore } from '../../stores/useAppStore';
 import {
   Productos,
   RespuestaResponse,
   RespuestaNumeroProductos,
 } from '../../components/models';
+import { ref, onMounted, nextTick, computed, watch } from 'vue';
+import { useAxios } from '../../services/useAxios';
+import { useAppStore } from '../../stores/useAppStore';
 
-// Datos
+// Data
 const { get } = useAxios();
 const appStore = useAppStore();
 const ruc = ref(appStore.ruc);
@@ -169,7 +169,7 @@ watch(nextPage, async () => {
           label="Cliente"
           :options="options"
           @filter="filterFn"
-          style="width: 350px"
+          style="width: 345px"
         >
           <template v-slot:no-option>
             <q-item>
@@ -193,7 +193,7 @@ watch(nextPage, async () => {
           :options="opcionesProductos"
           option-label="art_nomlar"
           @filter="filterProductsFn"
-          style="width: 350px"
+          style="width: 345px"
           @virtual-scroll="onScroll"
         >
           <template v-slot:no-option>
@@ -252,7 +252,7 @@ watch(nextPage, async () => {
       </div>
 
       <div class="row no-wrap q-pl-sm">
-        <div class="q-pa-none q-ml-sm q-mr-sm" style="max-width: 200px">
+        <div class="q-pa-none q-ml-sm q-mr-sm" style="max-width: 166px">
           <q-input
             debounce="350"
             v-model="appStore.desde"
@@ -285,7 +285,7 @@ watch(nextPage, async () => {
           </q-input>
         </div>
 
-        <div class="q-pa-none" style="max-width: 200px">
+        <div class="q-pa-none" style="max-width: 166px">
           <q-input
             debounce="350"
             v-model="appStore.hasta"

@@ -1,24 +1,20 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { useAxios } from '../../services/useAxios';
-import { useAppStore } from '../../stores/useAppStore';
-import { columnasRevisarReclamoMovil } from '../../services/useColumnas';
 import {
   Archivo,
   FilasReclamos,
   RespuestaArchivo,
 } from '../../components/models';
+import { computed, ref } from 'vue';
+import { useAxios } from '../../services/useAxios';
+import { columnasRevisarReclamoMovil } from '../../services/useColumnas';
 
 // Data
 const alert = ref(false);
 const { get } = useAxios();
-const appStore = useAppStore();
 const fotos = ref<Archivo[]>([]);
 const path = process.env.IMAGE_PATH;
-const replacedPath = ref('');
-const props = defineProps<{
-  filas: FilasReclamos[];
-}>();
+const replacedPath = process.env.REPLACED_PATH;
+const filas = defineModel<FilasReclamos[]>('filas', { required: true });
 const pagination = ref({
   sortBy: 'desc',
   descending: false,
@@ -55,15 +51,7 @@ const mostrarArchivos = async (archivos: [number, number, number]) => {
 };
 
 const pagesNumber = computed(() => {
-  return Math.ceil(props.filas.length / pagination.value.rowsPerPage);
-});
-
-onMounted(() => {
-  if (appStore.local) {
-    replacedPath.value = 'http://192.168.1.50:3009/static/';
-  } else {
-    replacedPath.value = 'https://apromedfarmaloja-cloud.com:3010/static/';
-  }
+  return Math.ceil(filas.value.length / pagination.value.rowsPerPage);
 });
 </script>
 
@@ -112,7 +100,7 @@ onMounted(() => {
   <div>
     <q-table
       class="text-grey-8"
-      :rows="props.filas"
+      :rows="filas"
       :columns="columnas"
       :visible-columns="columnasVisibles"
       row-key="name"

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick, computed, watch } from 'vue';
-import { useAxios } from '../../services/useAxios';
-import { useAppStore } from '../../stores/useAppStore';
 import {
   Productos,
   RespuestaResponse,
   RespuestaNumeroProductos,
 } from '../../components/models';
+import { useAxios } from '../../services/useAxios';
+import { useAppStore } from '../../stores/useAppStore';
+import { ref, onMounted, nextTick, computed, watch } from 'vue';
 
-// Datos
+// Data
 const { get } = useAxios();
 const appStore = useAppStore();
 const ruc = ref(appStore.ruc);

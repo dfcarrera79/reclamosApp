@@ -12,7 +12,6 @@ const router = useRouter();
 const route = useRoute();
 const isPwd = ref(true);
 const $q = useQuasar();
-$q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });
 const appStore = useAppStore();
 const { get, put } = useAxios();
 const { mostrarMensaje } = useMensajes();
@@ -89,7 +88,13 @@ const funcionIr = () => {
 onMounted(async () => {
   appStore.appCodigo = 2;
 
-  appStore.setUrlApi(process.env.API_URL);
+  const apiUrl =
+    process.env.API_URL ||
+    'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
+
+  // const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
+
+  appStore.setUrlApi(apiUrl);
   // appStore.setUrlApi('http://192.168.1.50:3009/v1/reclamos');
 
   // if (appStore.local) {

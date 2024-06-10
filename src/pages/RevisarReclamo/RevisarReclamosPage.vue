@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useAxios } from '../../services/useAxios';
-import { useAppStore } from '../../stores/useAppStore';
 import {
   Archivo,
   FilasReclamos,
   ObjetosReclamos,
   RespuestaReclamos,
 } from '../../components/models';
+import moment from 'moment';
+import { useQuasar } from 'quasar';
+import { computed, ref, watch } from 'vue';
 import RevisarData from './RevisarData.vue';
+import { useAxios } from '../../services/useAxios';
+import { useAppStore } from '../../stores/useAppStore';
 import VerificarVersion from '../VerificarVersionPage.vue';
 import DetalleRevisarReclamo from './DetalleRevisarReclamo.vue';
 import DetalleRevisarReclamoMovil from './DetalleRevisarReclamoMovil.vue';
-import { useQuasar } from 'quasar';
-import moment from 'moment';
 
 // Data
 const appStore = useAppStore();
@@ -132,13 +132,15 @@ watch(query, () => whichQuery());
     </div>
 
     <div class="q-pa-none">
-      <DetalleRevisarReclamoMovil
-        v-if="filas.length > 0 && $q.screen.lt.md"
-        :filas="filas"
-      />
       <DetalleRevisarReclamo
-        v-if="filas.length > 0 && !($q.screen.lt.md || $q.screen.lt.sm)"
-        :filas="filas"
+        class="gt-xs"
+        v-if="filas.length > 0"
+        v-model:filas="filas"
+      />
+      <DetalleRevisarReclamoMovil
+        class="xs"
+        v-if="filas.length > 0"
+        v-model:filas="filas"
       />
     </div>
     <div class="q-pa-md q-gutter-sm">
@@ -189,13 +191,5 @@ watch(query, () => whichQuery());
 </template>
 
 <style scoped>
-.my-card {
-  width: 100%;
-  max-width: 350px;
-}
-
-p {
-  word-break: break-all;
-  white-space: normal;
-}
+@import '../../css/detalle.reclamo.scss';
 </style>
