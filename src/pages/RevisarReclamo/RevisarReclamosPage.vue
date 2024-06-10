@@ -111,7 +111,6 @@ watch(query, () => whichQuery());
       @click="whichQuery"
       v-show="false"
     />
-
     <div
       class="fit row no-wrap justify-start items-start content-start"
       v-if="filas.length === 0"
@@ -134,13 +133,11 @@ watch(query, () => whichQuery());
 
     <div class="q-pa-none">
       <DetalleRevisarReclamo
-        class="gt-xs"
-        v-if="filas.length > 0"
+        v-if="filas.length > 0 && !($q.screen.lt.md || $q.screen.lt.sm)"
         v-model:filas="filas"
       />
       <DetalleRevisarReclamoMovil
-        class="xs"
-        v-if="filas.length > 0"
+        v-if="filas.length > 0 && $q.screen.lt.md"
         v-model:filas="filas"
       />
     </div>
