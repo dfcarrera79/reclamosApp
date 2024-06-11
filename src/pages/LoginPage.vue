@@ -68,21 +68,21 @@ const funcionIr = () => {
 
   // const baseUrl = 'http://192.168.50.10:3008/#/login/';
   // switch (appStore.appCodigo) {
-  //   case 1:
-  //     window.location.replace(`${baseUrl}1`);
-  //     break;
-  //   case 2:
-  //     window.location.replace(`${baseUrl}2`);
-  //     break;
-  //   case 3:
-  //     window.location.replace(`${baseUrl}3`);
-  //     break;
-  //   case 4:
-  //     window.location.replace(`${baseUrl}4`);
-  //     break;
-  //   default:
-  //     break;
-  // }
+  //   //   case 1:
+  //   //     window.location.replace(`${baseUrl}1`);
+  //   //     break;
+  //   //   case 2:
+  //   //     window.location.replace(`${baseUrl}2`);
+  //   //     break;
+  //   //   case 3:
+  //   //     window.location.replace(`${baseUrl}3`);
+  //   //     break;
+  //   //   case 4:
+  //   //     window.location.replace(`${baseUrl}4`);
+  //   //     break;
+  //   //   default:
+  //   //     break;
+  //   // }
 };
 
 onMounted(async () => {

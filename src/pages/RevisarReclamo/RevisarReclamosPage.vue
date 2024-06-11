@@ -17,20 +17,20 @@ import DetalleRevisarReclamo from './DetalleRevisarReclamo.vue';
 import DetalleRevisarReclamoMovil from './DetalleRevisarReclamoMovil.vue';
 
 // Data
-const appStore = useAppStore();
-const { get } = useAxios();
-const $q = useQuasar();
-$q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });
-const estado = ref(null);
 const reclamo = ref<ObjetosReclamos>({
   fecha_factura: '',
   ruc_reclamante: '',
   detalles: [],
 });
-const nombreEstado = ref('');
+const $q = useQuasar();
+const estado = ref(null);
 const alert = ref(false);
+const { get } = useAxios();
+const nombreEstado = ref('');
+const appStore = useAppStore();
 const fotos = ref<Archivo[]>([]);
 const filas = ref<FilasReclamos[]>([]);
+$q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });
 
 // Methods
 const whichEstado = computed(() => {
@@ -72,26 +72,26 @@ const whichQuery = async () => {
   reclamo.value = respuesta.objetos;
   filas.value = [];
   if (reclamo.value.fecha_factura !== undefined) {
-    nombreEstado.value = nuevoEstado(reclamo.value.detalles[0].estado);
-    filas.value.push({
-      estado: nombreEstado.value,
-      ruc: reclamo.value.ruc_reclamante,
-      nro_factura: reclamo.value.detalles[0].no_factura,
-      nro_reclamo: reclamo.value.detalles[0].id_reclamo,
-      fecha_reclamo: moment(reclamo.value.detalles[0].fecha_reclamo).format(
-        'DD-MM-YYYY'
-      ),
-      fecha_enproceso: moment(reclamo.value.detalles[0].fecha_enproceso).format(
-        'DD-MM-YYYY'
-      ),
-      fecha_finalizado: moment(
-        reclamo.value.detalles[0].fecha_finalizado
-      ).format('DD-MM-YYYY'),
-      cliente: reclamo.value.detalles[0].nombre_reclamante,
-      nombre_usuario: reclamo.value.detalles[0].nombre_usuario,
-      respuesta_finalizado: reclamo.value.detalles[0].respuesta_finalizado,
-      id_detalle: reclamo.value.detalles[0].id_detalle,
-      reclamos: reclamo.value.detalles[0].reclamos,
+    reclamo.value.detalles.forEach((detalle) => {
+      nombreEstado.value = nuevoEstado(detalle.estado);
+      filas.value.push({
+        estado: nombreEstado.value,
+        ruc: reclamo.value.ruc_reclamante,
+        nro_factura: detalle.no_factura,
+        nro_reclamo: detalle.id_reclamo,
+        fecha_reclamo: moment(detalle.fecha_reclamo).format('DD-MM-YYYY'),
+        fecha_enproceso: detalle.fecha_enproceso
+          ? moment(detalle.fecha_enproceso).format('DD-MM-YYYY')
+          : null,
+        fecha_finalizado: detalle.fecha_finalizado
+          ? moment(detalle.fecha_finalizado).format('DD-MM-YYYY')
+          : null,
+        cliente: detalle.nombre_reclamante,
+        nombre_usuario: detalle.nombre_usuario,
+        respuesta_finalizado: detalle.respuesta_finalizado,
+        id_detalle: detalle.id_detalle,
+        reclamos: detalle.reclamos,
+      });
     });
   }
 };

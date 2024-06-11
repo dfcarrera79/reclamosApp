@@ -10,6 +10,7 @@ import ArchivoDialog from '../../components/ArchivoDialog.vue';
 import { columnasRevisarReclamo } from '../../services/useColumnas';
 
 // Data
+const filter = ref('');
 const alert = ref(false);
 const { get } = useAxios();
 const fotos = ref<Archivo[]>([]);
@@ -66,15 +67,38 @@ const pagesNumber = computed(() => {
       hide-no-data
       :rows="filas"
       :columns="columnas"
+      :filter="filter"
       row-key="name"
       :visible-columns="visibleColumns"
       v-model:pagination="pagination"
       hide-pagination
     >
       <template v-slot:top-left>
-        <p class="text-primary text-h5" style="font-family: 'Bebas Neue'">
+        <p
+          class="text-primary text-h5 q-pt-md"
+          style="font-family: 'Bebas Neue'"
+        >
           RECLAMOS
         </p>
+      </template>
+
+      <template v-slot:top-right>
+        <q-input
+          outlined
+          input-class="text-right"
+          clearable
+          clear-icon="close"
+          dense
+          debounce="350"
+          borderless
+          color="primary"
+          v-model="filter"
+          placeholder="Buscar..."
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
       </template>
 
       <template v-slot:header="props">
