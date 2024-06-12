@@ -32,6 +32,7 @@ const visibleColumns = [
 ];
 
 const columnas = columnasRevisarReclamo;
+const expandedRows = ref<Set<number>>(new Set());
 
 // Methods
 const mostrarArchivos = async (archivos: [number, number, number]) => {
@@ -47,6 +48,14 @@ const mostrarArchivos = async (archivos: [number, number, number]) => {
     }
   }
   alert.value = true;
+};
+
+const toggleExpandRow = (rowId: number) => {
+  if (expandedRows.value.has(rowId)) {
+    expandedRows.value.delete(rowId);
+  } else {
+    expandedRows.value.add(rowId);
+  }
 };
 
 // Computed
@@ -68,7 +77,7 @@ const pagesNumber = computed(() => {
       :rows="filas"
       :columns="columnas"
       :filter="filter"
-      row-key="name"
+      row-key="id_detalle"
       :visible-columns="visibleColumns"
       v-model:pagination="pagination"
       hide-pagination
@@ -123,8 +132,8 @@ const pagesNumber = computed(() => {
               color="primary"
               round
               dense
-              @click="props.expand = !props.expand"
-              :icon="props.expand ? 'remove' : 'add'"
+              @click="toggleExpandRow(props.row.id_detalle)"
+              :icon="expandedRows.has(props.row.id_detalle) ? 'remove' : 'add'"
             />
           </q-td>
           <q-td
@@ -149,7 +158,7 @@ const pagesNumber = computed(() => {
             </template>
           </q-td>
         </q-tr>
-        <q-tr v-show="props.expand" :props="props">
+        <q-tr v-show="expandedRows.has(props.row.id_detalle)" :props="props">
           <q-td colspan="100%">
             <div class="text-left" v-show="props.row.estado !== 'Pendiente'">
               <strong>Encargado del reclamo:</strong>

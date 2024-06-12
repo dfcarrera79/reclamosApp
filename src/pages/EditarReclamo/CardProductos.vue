@@ -55,7 +55,7 @@ const renovarArchivo3 = (event: Detalle) => {
 
 <template>
   <q-card
-    class="q-mt-md"
+    class="q-mt-none q-ml-md"
     style="max-height: 95vh"
     bordered
     flat

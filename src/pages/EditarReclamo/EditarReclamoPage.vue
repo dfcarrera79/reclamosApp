@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import {
+  Arch,
+  Detalle,
+  Motivo,
+  Reclamos,
+  Item,
+  Producto,
+  Respuesta,
+} from '../../components/models';
 import { useQuasar } from 'quasar';
 import { ref, onMounted } from 'vue';
 import FormComponent from './FormComponent.vue';
@@ -11,15 +20,6 @@ import CardProductosMovil from './CardProductosMovil.vue';
 import VerificarVersion from '../VerificarVersionPage.vue';
 import ProductosComponent from 'src/pages/EditarReclamo/ProductosComponent.vue';
 import ProductosComponentMovil from 'src/pages/EditarReclamo/ProductosComponentMovil.vue';
-import {
-  Arch,
-  Detalle,
-  Motivo,
-  Reclamos,
-  Item,
-  Producto,
-  Respuesta,
-} from '../../components/models';
 
 // Datos
 const appStore = useAppStore();

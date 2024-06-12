@@ -3,8 +3,6 @@ import { computed, onMounted, ref } from 'vue';
 import { useAxios } from '../../services/useAxios';
 
 // Data
-// const detalle = defineModel<Object>('detalle', { required: true });
-
 /* defined props */
 const props = defineProps({
   detalle: {

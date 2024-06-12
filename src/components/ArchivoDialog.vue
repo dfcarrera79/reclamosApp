@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { Archivo } from './models';
 
 // Data
@@ -7,6 +7,13 @@ const path = ref<string>(process.env.IMAGE_PATH ?? '');
 const alert = defineModel<boolean>('alert', { required: true });
 const replacedPath = ref<string>(process.env.REPLACED_PATH ?? '');
 const fotos = defineModel<Archivo[]>('fotos', { required: true });
+
+watch(alert, (newValue) => {
+  if (!newValue) {
+    // Si alert se vuelve falso, vaciar el array fotos
+    fotos.value = [];
+  }
+});
 </script>
 
 <template>
