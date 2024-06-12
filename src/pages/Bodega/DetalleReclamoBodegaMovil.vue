@@ -84,10 +84,8 @@ const whichQuery = async (pagina: number, rowsNumber: number) => {
 };
 
 whichQuery(1, pageSize);
-// Definir una variable ref para rows que inicialmente es igual a newRows
-const rows = ref([...newFilas.value]);
 
-// Utilizar un watcher para actualizar rows cuando newRows cambie
+const rows = ref([...newFilas.value]);
 watch(newFilas, (newValue) => {
   rows.value.push(...newValue);
 });

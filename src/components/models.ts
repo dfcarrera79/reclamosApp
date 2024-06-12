@@ -1,5 +1,6 @@
 export interface user {
   id: string;
+  nombre_comercial: string;
   clave: string;
   ruc_cliente: string;
   razon_social: string;
@@ -289,31 +290,4 @@ export interface RespuestaReporte {
   error: string;
   mensaje: string;
   objetos: Reporte[];
-}
-
-export interface QTableColumn {
-  name: string;
-  required?: boolean;
-  label?: string;
-  align?: 'left' | 'center' | 'right';
-  field?: string | ((row: any) => any);
-  format?: (val: any, row: any) => any;
-  sortable?: boolean;
-  sort?: (a: any, b: any, rowA: any, rowB: any) => number;
-  classes?: string;
-  style?: string;
-  headerClasses?: string;
-  headerStyle?: string;
-  footerClasses?: string;
-  footerStyle?: string;
-  filter?: (val: any, updateValue: (value: any) => void) => void;
-  filterPlaceholder?: string;
-  filterOptions?: any[];
-  filterMethod?: (val: any, row: any) => boolean;
-  sortMethod?: (a: any, b: any, rowA: any, rowB: any) => number;
-  render?: (h: CreateElement, props: any) => VNode;
-  __tdClass?: string;
-  __thClass?: string;
-  __thStyle?: string;
-  __tdStyle?: string;
 }

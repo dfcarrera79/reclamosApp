@@ -15,7 +15,13 @@ export const useAppStore = defineStore('oApp', () => {
   const urlApi = ref('');
   const appCodigo = ref(0);
   const appVersion = ref('1.0.5');
-  const usuario = ref({ id: '', clave: '', ruc_cliente: '', razon_social: '' });
+  const usuario = ref({
+    id: '',
+    nombre_comercial: '',
+    clave: '',
+    ruc_cliente: '',
+    razon_social: '',
+  });
   const dialogo = ref({ id: 0, estado: '', email: '' });
   const estaLogeado = ref(false);
   const url = ref(window.location.href);
@@ -65,7 +71,13 @@ export const useAppStore = defineStore('oApp', () => {
   };
 
   const cerrarSession = () => {
-    usuario.value = { id: '', clave: '', ruc_cliente: '', razon_social: '' };
+    usuario.value = {
+      id: '',
+      nombre_comercial: '',
+      clave: '',
+      ruc_cliente: '',
+      razon_social: '',
+    };
     estaLogeado.value = false;
     LocalStorage.clear();
   };
