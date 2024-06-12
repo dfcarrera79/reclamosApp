@@ -1,8 +1,30 @@
+<script setup lang="ts">
+import { inject, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { useAppStore } from '../stores/useAppStore';
+
+// Data
+const $q = useQuasar();
+$q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });
+const appStore = useAppStore();
+const miniState = ref(true);
+const leftDrawerOpen = inject<boolean>('leftDrawerOpen');
+
+// Methods
+const reset = () => {
+  appStore.ruc = '';
+  appStore.desde = null;
+  appStore.hasta = null;
+  appStore.factura = '';
+};
+</script>
+
 <template>
   <div>
     <q-drawer
       v-model="leftDrawerOpen"
       side="left"
+      overlay
       bordered
       :width="320"
       :mini="miniState"
@@ -202,26 +224,3 @@
     </q-drawer>
   </div>
 </template>
-
-<script setup lang="ts">
-import { inject, ref } from 'vue';
-import { useQuasar } from 'quasar';
-import { useAppStore } from '../stores/useAppStore';
-
-// Data
-const $q = useQuasar();
-$q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });
-const appStore = useAppStore();
-const miniState = ref(true);
-const leftDrawerOpen = inject<boolean>('leftDrawerOpen');
-
-// Methods
-const reset = () => {
-  appStore.ruc = '';
-  appStore.desde = null;
-  appStore.hasta = null;
-  appStore.factura = '';
-};
-
-// const leftDrawerOpen = ref(false);
-</script>

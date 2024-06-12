@@ -124,9 +124,7 @@ const pagesNumber = computed(() => {
 
 <template>
   <ArchivoDialog v-model:alert="alert" v-model:fotos="fotos" />
-
   <DialogoEstado />
-
   <div>
     <q-table
       flat
