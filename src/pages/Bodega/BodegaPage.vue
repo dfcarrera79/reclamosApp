@@ -4,8 +4,8 @@ import BodegaData from './BodegaData.vue';
 import { useAxios } from '../../services/useAxios';
 import BodegaDataMovil from './BodegaDataMovil.vue';
 import { useAppStore } from '../../stores/useAppStore';
-import VerificarVersion from '../VerificarVersionPage.vue';
 import DetalleReclamoBodega from './DetalleReclamoBodega.vue';
+import VerificarVersion from '../../components/VerificarVersion.vue';
 import DetalleReclamoBodegaMovil from './DetalleReclamoBodegaMovil.vue';
 
 // Data

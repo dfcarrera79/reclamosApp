@@ -5,8 +5,8 @@ import { useQuasar, QTableProps } from 'quasar';
 import { ref } from 'vue';
 import { useMensajes } from '../../services/useMensajes';
 import ProductosComponent from './ProductosComponent.vue';
-import VerificarVersion from '../VerificarVersionPage.vue';
 import ProductosComponentMovil from './ProductosComponentMovil.vue';
+import VerificarVersion from '../../components/VerificarVersion.vue';
 import {
   Item,
   Producto,

@@ -11,9 +11,9 @@ import { computed, ref, watch } from 'vue';
 import RevisarData from './RevisarData.vue';
 import { useAxios } from '../../services/useAxios';
 import { useAppStore } from '../../stores/useAppStore';
-import VerificarVersion from '../VerificarVersionPage.vue';
 import ArchivoDialog from '../../components/ArchivoDialog.vue';
 import DetalleRevisarReclamo from './DetalleRevisarReclamo.vue';
+import VerificarVersion from '../../components/VerificarVersion.vue';
 import DetalleRevisarReclamoMovil from './DetalleRevisarReclamoMovil.vue';
 
 // Data

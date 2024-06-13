@@ -3,7 +3,7 @@ import { useQuasar } from 'quasar';
 import { onMounted, ref } from 'vue';
 import { useAxios } from '../../services/useAxios';
 import { useMensajes } from '../../services/useMensajes';
-import VerificarVersion from '../VerificarVersionPage.vue';
+import VerificarVersion from '../../components/VerificarVersion.vue';
 import { getCurrentYear, monthOptions } from '../../services/useDateTime';
 import { Meses, Reporte, RespuestaReporte } from '../../components/models';
 

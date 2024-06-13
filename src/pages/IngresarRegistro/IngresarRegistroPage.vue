@@ -2,7 +2,7 @@
 import { QTableProps } from 'quasar';
 import { ref, onMounted, watch } from 'vue';
 import { useAxios } from '../../services/useAxios';
-import VerificarVersion from '../VerificarVersionPage.vue';
+import VerificarVersion from '../../components/VerificarVersion.vue';
 import { ProductoLaboratorio, ResponseData } from '../../components/models';
 import ProductosComponent from './ProductosComponent.vue';
 import ProductosComponentMovil from './ProductosComponentMovil.vue';

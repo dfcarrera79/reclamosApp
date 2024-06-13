@@ -17,7 +17,7 @@ import { obtenerArchivos } from '../../utils/AppUtils';
 import { useAppStore } from '../../stores/useAppStore';
 import { useMensajes } from '../../services/useMensajes';
 import CardProductosMovil from './CardProductosMovil.vue';
-import VerificarVersion from '../VerificarVersionPage.vue';
+import VerificarVersion from '../../components/VerificarVersion.vue';
 import ProductosComponent from 'src/pages/EditarReclamo/ProductosComponent.vue';
 import ProductosComponentMovil from 'src/pages/EditarReclamo/ProductosComponentMovil.vue';
 
