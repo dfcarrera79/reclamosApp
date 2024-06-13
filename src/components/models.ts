@@ -266,6 +266,7 @@ export interface RespuestaResponse {
 export interface SessionData {
   usuario: {
     id: string;
+    nombre_comercial: string;
     clave: string;
     ruc_cliente: string;
     razon_social: string;
