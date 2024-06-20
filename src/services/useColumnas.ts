@@ -39,6 +39,18 @@ export const columnasVisibles = (est: string): string[] => {
   }
 };
 
+export const columnasVisiblesMovil = (est: string): string[] => {
+  if (est === 'PEN') {
+    return ['prioridad', 'numero'];
+  } else if (est === 'PRO') {
+    return ['prioridad', 'numero', 'fecha_enproceso'];
+  } else if (est === 'FIN') {
+    return ['prioridad', 'numero', 'fecha_finalizado'];
+  } else {
+    return [''];
+  }
+};
+
 export const columnasDetalleReclamo: QTableProps['columns'] = [
   {
     name: 'prioridad',

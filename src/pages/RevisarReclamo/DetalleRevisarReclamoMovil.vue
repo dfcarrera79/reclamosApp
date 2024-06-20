@@ -139,8 +139,10 @@ const pagesNumber = computed(() => {
               </q-list>
             </q-card-section>
             <q-separator />
-            <q-card-section class="column flex flex-center q-pa-xs">
-              <strong>Productos en reclamo</strong>
+            <q-card-section class="column flex q-pa-xs">
+              <div class="flex flex-center">
+                <strong>Productos en reclamo</strong>
+              </div>
               <div
                 v-for="col in props.cols.filter(
                   (col: any) => col.name == 'reclamos'
@@ -149,7 +151,7 @@ const pagesNumber = computed(() => {
               >
                 <div v-for="reclamo in col.value" :key="reclamo.producto.id">
                   <q-separator />
-                  <p>
+                  <p class="q-pt-xs">
                     {{ reclamo.producto.nombre }}
                   </p>
                   <p>

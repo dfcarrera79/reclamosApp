@@ -1,5 +1,14 @@
 import { Detalle } from '../components/models';
 
+export function capitalizeWords(sentence: string): string {
+  return sentence
+    .split(' ')
+    .map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
+
 export function deducirMensajeError(o_error) {
   let mensaje = '';
   let hubo = false;

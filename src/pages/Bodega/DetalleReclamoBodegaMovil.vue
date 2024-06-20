@@ -6,10 +6,7 @@ import { useAppStore } from '../../stores/useAppStore';
 import { procesarObjetos } from '../../services/useUtils';
 import { useBodegaStore } from '../../stores/useBodegaStore';
 import ArchivoDialog from '../../components/ArchivoDialog.vue';
-import {
-  columnasVisibles,
-  columnasDetalleReclamo,
-} from '../../services/useColumnas';
+import { columnasDetalleReclamo } from '../../services/useColumnas';
 import {
   Archivo,
   Filas,
@@ -23,6 +20,16 @@ const props = defineProps<{
   estado: string;
   query: string;
 }>();
+
+interface TableColumn {
+  name: string;
+  required: boolean;
+  label: string;
+  align: 'left' | 'center' | 'right';
+  sortable: boolean;
+  __iconClass: string;
+  __thClass: string;
+}
 
 // Data
 const page = ref(1);
@@ -38,7 +45,6 @@ const bodegaStore = useBodegaStore();
 const fotos = ref<Archivo[]>([]);
 const newFilas = ref<Filas[]>([]);
 const pagination = { rowsPerPage: 0 };
-const visibleColumns = ref<string[]>([]);
 const replacedPath = ref('');
 const columnas = columnasDetalleReclamo;
 
@@ -104,8 +110,6 @@ const mostrarArchivos = async (archivos: [number, number, number]) => {
   }
   alert.value = true;
 };
-
-visibleColumns.value = columnasVisibles(props.estado);
 
 const onScroll = ({ to, ref }: { to: number; ref: any }) => {
   const lastPage = Math.ceil(appStore.numFilas / pageSize);
@@ -216,16 +220,45 @@ const estadosFiltrados = ref(filtro);
           </q-td>
         </q-tr>
         <q-dialog v-model="props.expand" persistent>
-          <q-card bordered flat class="q-pa-xs">
+          <q-card bordered flat class="q-pa-xs text-grey-8">
             <q-bar class="bg-grey-8 text-white row justify-center q-pa-none">
               <div class="q-pl-sm">
-                <strong>RECLAMO</strong>
+                <strong>RECLAMO {{ props.row.nro_reclamo }} </strong>
+                <span
+                  class="q-ml-md"
+                  style="text-align: center"
+                  v-for="col in props.cols.filter(
+                    (col: TableColumn) => col.name !== 'numero'
+                  )"
+                  :key="col.name"
+                >
+                  <template v-if="col.name === 'prioridad'">
+                    <template v-if="col.value == 'Alta'">
+                      <q-badge rounded color="negative">
+                        {{ col.value }}
+                      </q-badge>
+                    </template>
+                    <template v-else-if="col.value == 'Media'">
+                      <q-badge rounded color="warning">
+                        {{ col.value }}
+                      </q-badge>
+                    </template>
+                    <template v-else>
+                      <q-badge rounded color="grey-5">
+                        {{ col.value }}
+                      </q-badge>
+                    </template>
+                  </template>
+                  <template v-else>
+                    {{ col.value }}
+                  </template>
+                </span>
               </div>
 
               <q-space />
 
               <q-btn dense flat icon="close" v-close-popup>
-                <q-tooltip>Close</q-tooltip>
+                <q-tooltip>Cerrar</q-tooltip>
               </q-btn>
             </q-bar>
             <q-card-section class="q-pa-xs">
@@ -263,18 +296,58 @@ const estadosFiltrados = ref(filtro);
                 </template>
               </q-select>
 
-              <q-list dense>
+              <div class="q-mt-sm">
+                <p class="q-mb-sm">
+                  <strong>Usuario(vendedor):</strong>
+                  {{ props.row.reclamos[0]['usuario'] }}
+                </p>
+                <p class="q-mb-sm">
+                  <strong>Cliente:</strong>
+                  {{ props.row.cliente }}
+                </p>
+                <p class="q-mb-sm">
+                  <strong>RUC: </strong>
+                  {{ props.row.ruc }}
+                </p>
+                <p class="q-mb-sm">
+                  <strong>Nro. Factura: </strong>
+                  {{ props.row.nro_factura }}
+                </p>
+                <p class="q-mb-sm">
+                  <strong>Fecha de factura: </strong>
+                  {{ props.row.fecha_factura }}
+                </p>
+                <p class="q-mb-sm">
+                  <strong>Fecha del reclamo: </strong>
+                  {{ props.row.fecha_reclamo }}
+                </p>
+                <p class="q-mb-sm" v-show="estado !== 'PEN'">
+                  <strong>Encargado del reclamo: </strong>
+                  {{ props.row.nombre_usuario }}
+                </p>
+                <p class="q-mb-sm" v-show="estado !== 'PEN'">
+                  <strong>Respuesta al reclamo: </strong>
+                  <span v-html="props.row.respuesta_finalizado"></span>
+                </p>
+              </div>
+
+              <!-- <q-list dense>
                 <q-item>
                   <q-item-section>Usuario(vendedor): </q-item-section>
                   <q-item-section>
-                    {{ props.row.reclamos[0]['usuario'] }}
+                    {{ capitalizeWords(props.row.reclamos[0]['usuario']) }}
                   </q-item-section>
                 </q-item>
-
+                <q-item>
+                  <q-item-section>Cliente: </q-item-section>
+                  <q-item-section>
+                    {{ capitalizeWords(props.row.cliente) }}
+                  </q-item-section>
+                </q-item>
                 <q-item v-show="estado !== 'PEN'">
                   <q-item-section>Encargado del reclamo: </q-item-section>
                   <q-item-section>
-                    {{ props.row.nombre_usuario }}
+                    {{ capitalizeWords(props.row.nombre_usuario) }}
                   </q-item-section>
                 </q-item>
 
@@ -284,42 +357,11 @@ const estadosFiltrados = ref(filtro);
                     <span v-html="props.row.respuesta_finalizado"></span>
                   </q-item-section>
                 </q-item>
-
-                <q-item
-                  v-for="col in props.cols.filter(
-                    (col: any) => col.name !== 'desc' && col.name !== 'reclamos'
-                  )"
-                  :key="col.name"
-                >
-                  <q-item-section>
-                    <q-item-label>{{ col.label }}</q-item-label>
-                  </q-item-section>
-                  <q-item-section v-if="col.name === 'prioridad'">
-                    <q-item-label v-if="col.value === 'Alta'">
-                      <q-badge rounded color="negative">
-                        {{ col.value }}
-                      </q-badge>
-                    </q-item-label>
-                    <q-item-label v-else-if="col.value === 'Media'">
-                      <q-badge rounded color="warning">
-                        {{ col.value }}
-                      </q-badge>
-                    </q-item-label>
-                    <q-item-label v-else>
-                      <q-badge rounded color="grey-5">
-                        {{ col.value }}
-                      </q-badge>
-                    </q-item-label>
-                  </q-item-section>
-                  <q-item-section v-else>
-                    <q-item-label caption> {{ col.value }} </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
+              </q-list> -->
             </q-card-section>
 
-            <q-card-section class="flex flex-center column q-pa-xs">
-              <div>
+            <q-card-section class="flex column q-pa-xs">
+              <div class="flex flex-center">
                 <strong>Productos en reclamo</strong>
               </div>
               <div
@@ -339,7 +381,6 @@ const estadosFiltrados = ref(filtro);
                 </p>
                 <p
                   class="text-left"
-                  style="width: 310px"
                   v-if="reclamo.archivos.every((item: number) => item === 0)"
                 >
                   <strong>Archivos:</strong> Ningún archivo adjunto
