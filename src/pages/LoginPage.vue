@@ -65,24 +65,6 @@ const funcionIr = () => {
     default:
       break;
   }
-
-  // const baseUrl = 'http://192.168.50.10:3008/#/login/';
-  // switch (appStore.appCodigo) {
-  //     case 1:
-  //       window.location.replace(`${baseUrl}1`);
-  //       break;
-  //     case 2:
-  //       window.location.replace(`${baseUrl}2`);
-  //       break;
-  //     case 3:
-  //       window.location.replace(`${baseUrl}3`);
-  //       break;
-  //     case 4:
-  //       window.location.replace(`${baseUrl}4`);
-  //       break;
-  //     default:
-  //       break;
-  //   }
 };
 
 onMounted(async () => {
@@ -95,13 +77,6 @@ onMounted(async () => {
   // const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
 
   appStore.setUrlApi(apiUrl);
-  // appStore.setUrlApi('http://192.168.1.50:3009/v1/reclamos');
-
-  // if (appStore.local) {
-  //   appStore.setUrlApi('http://192.168.1.50:3009/v1/reclamos');
-  // } else {
-  //   appStore.setUrlApi(process.env.API_URL);
-  // }
 
   const respuesta = await get('/usuario/obtenerVersion', {});
 
