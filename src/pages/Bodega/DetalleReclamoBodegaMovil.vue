@@ -6,7 +6,10 @@ import { useAppStore } from '../../stores/useAppStore';
 import { procesarObjetos } from '../../services/useUtils';
 import { useBodegaStore } from '../../stores/useBodegaStore';
 import ArchivoDialog from '../../components/ArchivoDialog.vue';
-import { columnasDetalleReclamo } from '../../services/useColumnas';
+import {
+  columnasDetalleReclamoMovil,
+  columnasVisiblesMovil,
+} from '../../services/useColumnas';
 import {
   Archivo,
   Filas,
@@ -45,8 +48,9 @@ const bodegaStore = useBodegaStore();
 const fotos = ref<Archivo[]>([]);
 const newFilas = ref<Filas[]>([]);
 const pagination = { rowsPerPage: 0 };
+const visibleColumns = ref<string[]>([]);
 const replacedPath = ref('');
-const columnas = columnasDetalleReclamo;
+const columnas = columnasDetalleReclamoMovil;
 
 // Methods
 const handleButton = (mail: string, id: number) => {
@@ -111,6 +115,8 @@ const mostrarArchivos = async (archivos: [number, number, number]) => {
   alert.value = true;
 };
 
+visibleColumns.value = columnasVisiblesMovil(props.estado);
+
 const onScroll = ({ to, ref }: { to: number; ref: any }) => {
   const lastPage = Math.ceil(appStore.numFilas / pageSize);
   const lastIndex = rows.value.length - 1;
@@ -154,12 +160,13 @@ const estadosFiltrados = ref(filtro);
     <q-table
       class="my-sticky-header-table text-h6 text-grey-8"
       flat
+      dense
       bordered
       :rows="rows"
       :columns="columnas"
       :loading="loading"
       row-key="nro_reclamo"
-      :visible-columns="['prioridad', 'numero']"
+      :visible-columns="visibleColumns"
       style="height: 410px"
       virtual-scroll
       :virtual-scroll-item-size="48"
@@ -249,9 +256,6 @@ const estadosFiltrados = ref(filtro);
                       </q-badge>
                     </template>
                   </template>
-                  <template v-else>
-                    {{ col.value }}
-                  </template>
                 </span>
               </div>
 
@@ -330,34 +334,6 @@ const estadosFiltrados = ref(filtro);
                   <span v-html="props.row.respuesta_finalizado"></span>
                 </p>
               </div>
-
-              <!-- <q-list dense>
-                <q-item>
-                  <q-item-section>Usuario(vendedor): </q-item-section>
-                  <q-item-section>
-                    {{ capitalizeWords(props.row.reclamos[0]['usuario']) }}
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>Cliente: </q-item-section>
-                  <q-item-section>
-                    {{ capitalizeWords(props.row.cliente) }}
-                  </q-item-section>
-                </q-item>
-                <q-item v-show="estado !== 'PEN'">
-                  <q-item-section>Encargado del reclamo: </q-item-section>
-                  <q-item-section>
-                    {{ capitalizeWords(props.row.nombre_usuario) }}
-                  </q-item-section>
-                </q-item>
-
-                <q-item v-show="estado !== 'PEN'">
-                  <q-item-section>Respuesta al reclamo: </q-item-section>
-                  <q-item-section>
-                    <span v-html="props.row.respuesta_finalizado"></span>
-                  </q-item-section>
-                </q-item>
-              </q-list> -->
             </q-card-section>
 
             <q-card-section class="flex column q-pa-xs">
@@ -369,7 +345,7 @@ const estadosFiltrados = ref(filtro);
                 :key="reclamo.producto.id"
               >
                 <q-separator />
-                <p>
+                <p class="q-pt-xs">
                   {{ reclamo.producto.nombre }}
                 </p>
                 <p>

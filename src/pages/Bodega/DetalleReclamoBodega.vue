@@ -245,22 +245,24 @@ const pagesNumber = computed(() => {
               >
                 <q-card bordered flat class="bg-grey-1 my-card">
                   <q-card-section>
-                    <p class="text-h7">{{ reclamo.producto.nombre }}</p>
+                    <p class="q-mb-none text-h7">
+                      {{ reclamo.producto.nombre }}
+                    </p>
                   </q-card-section>
 
                   <q-separator inset />
 
                   <q-card-section>
-                    <p class="text-left">
+                    <p class="q-mb-none text-left">
                       <strong>Motivo:</strong>
                       {{ reclamo.motivo.nombre_motivo }}
                     </p>
-                    <p class="text-left">
+                    <p class="q-mb-none text-left">
                       <strong>Detalle: </strong>
                       <span v-html="reclamo.comentario"></span>
                     </p>
                     <p
-                      class="text-left"
+                      class="q-mb-none text-left"
                       v-if="reclamo.archivos.every((item: number) => item === 0)"
                     >
                       <strong>Archivos:</strong> Ningún archivo adjunto

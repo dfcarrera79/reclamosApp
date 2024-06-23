@@ -99,89 +99,80 @@ const pagesNumber = computed(() => {
       </template>
 
       <template v-slot:item="props">
-        <div
-          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
-          :style="props.selected ? 'transform: scale(0.95);' : ''"
-        >
-          <q-card bordered flat>
-            <q-card-section>
-              <q-list dense>
-                <q-item
-                  v-for="col in props.cols.filter(
-                    (col: any) => col.name !== 'desc' && col.name !== 'reclamos'
-                  )"
-                  :key="col.name"
-                >
-                  <q-item-section>
-                    <q-item-label>{{ col.label }}: </q-item-label>
-                  </q-item-section>
-                  <q-item-section v-if="col.name === 'estado'">
-                    <q-item-label v-if="col.value === 'Finalizado'">
-                      <q-badge rounded color="positive">
-                        {{ col.value }}
-                      </q-badge>
-                    </q-item-label>
-                    <q-item-label v-else-if="col.value === 'Pendiente'">
-                      <q-badge rounded color="negative">
-                        {{ col.value }}
-                      </q-badge>
-                    </q-item-label>
-                    <q-item-label v-else>
-                      <q-badge rounded color="orange">
-                        {{ col.value }}
-                      </q-badge>
-                    </q-item-label>
-                  </q-item-section>
-                  <q-item-section v-else>
-                    <q-item-label caption> {{ col.value }} </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-card-section>
-            <q-separator />
-            <q-card-section class="column flex q-pa-xs">
-              <div class="flex flex-center">
-                <strong>Productos en reclamo</strong>
+        <q-card class="q-my-sm" bordered flat>
+          <q-card-section>
+            <span
+              v-for="col in props.cols.filter(
+                  (col: any) => col.name !== 'desc' && col.name !== 'reclamos'
+                )"
+              :key="col.name"
+            >
+              <div class="q-my-sm" v-if="col.name === 'estado'">
+                <strong>{{ col.label }}: </strong>
+                <span v-if="col.value === 'Finalizado'">
+                  <q-badge rounded color="positive">
+                    {{ col.value }}
+                  </q-badge>
+                </span>
+                <span v-else-if="col.value === 'Pendiente'">
+                  <q-badge rounded color="negative">
+                    {{ col.value }}
+                  </q-badge>
+                </span>
+                <span v-else>
+                  <q-badge rounded color="orange">
+                    {{ col.value }}
+                  </q-badge>
+                </span>
               </div>
-              <div
-                v-for="col in props.cols.filter(
+              <div class="q-my-sm" v-else>
+                <strong>{{ col.label }}:</strong> {{ col.value }}
+              </div>
+            </span>
+          </q-card-section>
+          <q-separator />
+          <q-card-section class="column flex q-px-md">
+            <div class="flex flex-center">
+              <strong>Productos en reclamo</strong>
+            </div>
+            <div
+              v-for="col in props.cols.filter(
                   (col: any) => col.name == 'reclamos'
                 )"
-                :key="col.name"
-              >
-                <div v-for="reclamo in col.value" :key="reclamo.producto.id">
-                  <q-separator />
-                  <p class="q-pt-xs">
-                    {{ reclamo.producto.nombre }}
-                  </p>
-                  <p>
-                    <strong>Motivo:</strong> {{ reclamo.motivo.nombre_motivo }}
-                  </p>
-                  <p>
-                    <strong>Detalle: </strong>
-                    <span v-html="reclamo.comentario"></span>
-                  </p>
-                  <p
-                    class="text-left"
-                    style="width: 310px"
-                    v-if="reclamo.archivos.every((item: number) => item === 0)"
-                  >
-                    <strong>Archivos:</strong> Ningún archivo adjunto
-                  </p>
-                  <q-btn
-                    v-if="!reclamo.archivos.every((item: number) => item === 0)"
-                    size="11px"
-                    outline
-                    color="primary"
-                    @click="mostrarArchivos(reclamo.archivos)"
-                    >Archivos</q-btn
-                  >
-                  <q-separator class="q-mt-xs" />
-                </div>
+              :key="col.name"
+            >
+              <div v-for="reclamo in col.value" :key="reclamo.producto.id">
+                <q-separator />
+                <p class="q-pt-md">
+                  {{ reclamo.producto.nombre }}
+                </p>
+                <p class="q-py-xs q-mb-none">
+                  <strong>Motivo:</strong> {{ reclamo.motivo.nombre_motivo }}
+                </p>
+                <p class="q-py-xs q-mb-none">
+                  <strong>Detalle: </strong>
+                  <span v-html="reclamo.comentario"></span>
+                </p>
+                <p
+                  class="text-left q-py-xs q-mb-none"
+                  style="width: 310px"
+                  v-if="reclamo.archivos.every((item: number) => item === 0)"
+                >
+                  <strong>Archivos:</strong> Ningún archivo adjunto
+                </p>
+                <q-btn
+                  v-if="!reclamo.archivos.every((item: number) => item === 0)"
+                  size="11px"
+                  outline
+                  color="primary"
+                  @click="mostrarArchivos(reclamo.archivos)"
+                  >Archivos</q-btn
+                >
+                <q-separator class="q-mt-xs" />
               </div>
-            </q-card-section>
-          </q-card>
-        </div>
+            </div>
+          </q-card-section>
+        </q-card>
       </template>
     </q-table>
     <div class="row justify-center q-mt-md">

@@ -51,18 +51,20 @@ export const columnasVisiblesMovil = (est: string): string[] => {
   }
 };
 
+// Función para calcular la prioridad
+const calcularPrioridad = (row: Filas): string => {
+  const prioridad = Math.min(...row.reclamos.map((el) => el.motivo.prioridad));
+  return prioridad === 1 ? 'Alta' : prioridad === 2 ? 'Media' : 'Mínima';
+};
+
+// Columnas comunes
 export const columnasDetalleReclamo: QTableProps['columns'] = [
   {
     name: 'prioridad',
     required: true,
     label: 'Prioridad',
     align: 'center',
-    field: (row: Filas) =>
-      Math.min(...row.reclamos.map((el) => el.motivo.prioridad)) == 1
-        ? 'Alta'
-        : Math.min(...row.reclamos.map((el) => el.motivo.prioridad)) == 2
-        ? 'Media'
-        : 'Mínima',
+    field: calcularPrioridad,
     sortable: true,
   },
   {
@@ -104,7 +106,7 @@ export const columnasDetalleReclamo: QTableProps['columns'] = [
   { name: 'motivo', label: 'Motivo', field: 'motivo', align: 'left' },
   {
     name: 'encargado',
-    label: 'Encagado del reclamo',
+    label: 'Encargado del reclamo',
     field: 'nombre_usuario',
     align: 'left',
   },
@@ -122,6 +124,13 @@ export const columnasDetalleReclamo: QTableProps['columns'] = [
   },
 ];
 
+// Columnas específicas para la vista móvil
+export const columnasDetalleReclamoMovil: QTableProps['columns'] =
+  columnasDetalleReclamo.map((col) => ({
+    ...col,
+    label: col.label === 'Nro. reclamo' ? 'Nro.' : col.label,
+  }));
+
 export const columnasRevisarReclamoMovil: QTableProps['columns'] = [
   {
     name: 'estado',
@@ -132,7 +141,7 @@ export const columnasRevisarReclamoMovil: QTableProps['columns'] = [
   },
   {
     name: 'numero',
-    label: 'Nro. reclamo',
+    label: 'Nro.',
     align: 'left',
     field: 'nro_reclamo',
     sortable: true,
