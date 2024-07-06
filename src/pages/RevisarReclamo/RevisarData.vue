@@ -1,14 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useAppStore } from '../../stores/useAppStore';
 
 // Datos
 const appStore = useAppStore();
-const ruc = ref(appStore.ruc);
-ruc.value =
-  appStore.appCodigo === appStore.APP_CLIENTE
-    ? appStore.usuario.ruc_cliente
-    : '';
+// const ruc = ref(appStore.ruc);
+// ruc.value =
+//   appStore.appCodigo === appStore.APP_CLIENTE
+//     ? appStore.usuario.ruc_cliente
+//     : '';
+
+onMounted(() => {
+  appStore.ruc =
+    appStore.appCodigo === appStore.APP_CLIENTE
+      ? appStore.usuario.ruc_cliente
+      : '';
+});
 </script>
 
 <template>
@@ -27,6 +34,7 @@ ruc.value =
           v-model="appStore.ruc"
           type="text"
           label="RUC"
+          :disable="appStore.appCodigo === appStore.APP_CLIENTE"
           outlined
           dense
           clearable

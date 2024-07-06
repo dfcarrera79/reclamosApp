@@ -17,6 +17,7 @@ import VerificarVersion from '../../components/VerificarVersion.vue';
 import DetalleRevisarReclamoMovil from './DetalleRevisarReclamoMovil.vue';
 
 // Data
+const appStore = useAppStore();
 const reclamo = ref<ObjetosReclamos>({
   fecha_factura: '',
   ruc_reclamante: '',
@@ -27,7 +28,7 @@ const estado = ref(null);
 const alert = ref(false);
 const { get } = useAxios();
 const nombreEstado = ref('');
-const appStore = useAppStore();
+
 const fotos = ref<Archivo[]>([]);
 const filas = ref<FilasReclamos[]>([]);
 $q.screen.setSizes({ sm: 300, md: 500, lg: 1000, xl: 2000 });

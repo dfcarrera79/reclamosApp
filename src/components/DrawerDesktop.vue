@@ -208,7 +208,7 @@ const reset = () => {
                 class="text-secondary text-h6"
                 style="font-family: 'Bebas Neue'"
               >
-                RESPORTES
+                REPORTES
               </span>
             </q-item-section>
           </q-item>

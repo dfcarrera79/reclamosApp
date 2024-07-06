@@ -63,9 +63,21 @@ const procesarFormulario = async () => {
   const trimmedRuc = ruc.value.trim();
   const trimmedFactura = factura.value.trim();
 
-  if (trimmedRuc.length === 0 || trimmedFactura.length === 0) {
+  // Verificar que trimmedRuc y trimmedFactura no estén vacíos
+  if (trimmedRuc.length === 0) {
+    mostrarError('Es necesario llenar el campo RUC.', 'center');
+    return;
+  }
+
+  if (trimmedFactura.length === 0) {
+    mostrarError('Es necesario llenar el campo número de factura.', 'center');
+    return;
+  }
+
+  // Verificar que el trimmedRuc tenga una longitud de 10 o de 13
+  if (trimmedRuc.length !== 10 && trimmedRuc.length !== 13) {
     mostrarError(
-      'Es necesario llenar los campos RUC y número de factura',
+      'Revise el número de RUC. Debe tener 10 o 13 dígitos.',
       'center'
     );
     return;
@@ -108,7 +120,7 @@ const procesarFormulario = async () => {
     originalRows = filasOriginales.value;
   } catch (error) {
     mostrarError(
-      'Hubo un error al obtener los productos. Por favor, inténtelo de nuevo.',
+      'Hubo un error al obtener los productos. Por favor, revise el RUC y el número de factura e inténtelo de nuevo.',
       'center'
     );
   }

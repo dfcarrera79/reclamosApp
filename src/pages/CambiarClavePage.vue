@@ -5,9 +5,10 @@ import { useAppStore } from '../stores/useAppStore';
 import { useMensajes } from '../services/useMensajes';
 
 // Datos
-const appStore = useAppStore();
+const isPwd = ref(true);
 const { put } = useAxios();
 const newPassword = ref('');
+const appStore = useAppStore();
 const confirmPassword = ref('');
 const { mostrarMensaje } = useMensajes();
 const claveActualizada = ref({
@@ -43,48 +44,58 @@ const changePassword = async (ruc: string) => {
 
 <template>
   <q-page padding>
-    <div class="update-password">
-      <h4 class="text-grey-8" style="font-family: 'Bebas Neue'">
-        CAMBIAR CLAVE
-      </h4>
-      <form @submit="changePassword(ruc)">
-        <div class="form-group">
-          <label for="newPassword" class="col-6 text-grey-8"
-            ><strong>Nueva contraseña</strong></label
-          >
-          <input
-            id="newPassword"
-            type="password"
-            v-model="newPassword"
-            required
+    <h4 class="text-grey-8 q-ml-md q-mb-sm" style="font-family: 'Bebas Neue'">
+      CAMBIAR CONTRASEÑA
+    </h4>
+    <p class="text-secondary text-body2 q-pa-md">
+      <strong
+        >Por favor, ingrese una contraseña personal para asegurar su cuenta.
+      </strong>
+    </p>
+    <q-form @submit="changePassword(ruc)" class="q-gutter-md q-px-md">
+      <q-input
+        outlined
+        dense
+        v-model="newPassword"
+        label="Nueva contraseña"
+        lazy-rules
+        :rules="[
+          (val) => (val && val.length > 0) || 'Debe ingresar una contraseña',
+        ]"
+      >
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
           />
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword" class="col-6 text-grey-8"
-            ><strong>Confirmar contraseña</strong></label
-          >
-          <input
-            id="confirmPassword"
-            type="password"
-            v-model="confirmPassword"
-            required
+        </template>
+      </q-input>
+
+      <q-input
+        outlined
+        dense
+        :type="isPwd ? 'password' : 'text'"
+        v-model="confirmPassword"
+        label="Confirmar contraseña"
+        lazy-rules
+        :rules="[
+          (val) => (val && val.length > 0) || 'Debe ingresar una contraseña',
+        ]"
+      >
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
           />
-        </div>
-        <q-btn
-          class="q-ma-sm"
-          outline
-          color="primary"
-          style="height: 40px; width: 183px"
-          type="submit"
-        >
-          <div class="row items-center no-wrap q-pa-none">
-            <div class="text-center text-caption">
-              <strong>Cambiar contraseña</strong>
-            </div>
-          </div>
-        </q-btn>
-      </form>
-    </div>
+        </template>
+      </q-input>
+
+      <div>
+        <q-btn label="Cambiar contraseña" type="submit" color="primary" />
+      </div>
+    </q-form>
   </q-page>
 </template>
 
