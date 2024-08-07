@@ -38,8 +38,8 @@ const newFilas = ref<Filas[]>([]);
 const visibleColumns = ref<string[]>([]);
 
 const pagination = ref({
-  sortBy: 'desc',
-  descending: false,
+  sortBy: 'numero',
+  descending: true,
   page: page.value,
   rowsPerPage: 50,
   rowsNumber: appStore.numFilas,
@@ -70,6 +70,7 @@ const whichQuery = async (pagina: number, rowsNumber: number) => {
     registrosPorPagina: rowsNumber, // 0 means all rows
   });
   const objetos: Objetos[] = respuesta.objetos;
+  console.log('[RESPUESTA]: ', respuesta);
   if (respuesta.error === 'S') {
     console.error('Error', respuesta.mensaje);
     return '';
@@ -232,9 +233,26 @@ const pagesNumber = computed(() => {
               <strong>Encargado del reclamo: </strong>
               {{ props.row.nombre_usuario }}
             </div>
-            <div class="text-left" v-show="estado !== 'PEN'">
+            <div
+              class="text-left"
+              v-show="estado !== 'PEN' && estado !== 'FIN'"
+            >
               <strong>Respuesta al reclamo: </strong>
-              <span v-html="props.row.respuesta_finalizado"></span>
+              <span
+                v-if="props.row.respuesta_enproceso"
+                v-html="props.row.respuesta_enproceso"
+              ></span>
+              <span v-else v-html="props.row.respuesta_finalizado"></span>
+            </div>
+            <div class="text-left" v-show="estado == 'FIN'">
+              <div v-if="props.row.respuesta_enproceso">
+                <strong> Respuesta al reclamo (En proceso): </strong>
+                <span v-html="props.row.respuesta_enproceso"></span>
+              </div>
+              <div>
+                <strong>Respuesta al reclamo (Finalizado): </strong>
+                <span v-html="props.row.respuesta_finalizado"></span>
+              </div>
             </div>
 
             <div class="row wrap">

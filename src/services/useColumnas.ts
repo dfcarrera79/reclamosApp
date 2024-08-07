@@ -154,8 +154,14 @@ export const columnasRevisarReclamoMovil: QTableProps['columns'] = [
     sortable: true,
   },
   {
-    name: 'respuesta',
-    label: 'Respuesta al reclamo',
+    name: 'respuesta_enproceso',
+    label: 'Respuesta al reclamo (En proceso)',
+    field: 'respuesta_enproceso',
+    align: 'left',
+  },
+  {
+    name: 'respuesta_finalizado',
+    label: 'Respuesta al reclamo (Finalizado)',
     field: 'respuesta_finalizado',
     align: 'left',
   },

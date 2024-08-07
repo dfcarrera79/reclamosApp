@@ -26,7 +26,8 @@ const columnasVisibles = [
   'estado',
   'numero',
   'fecha',
-  'respuesta',
+  'respuesta_enproceso',
+  'respuesta_finalizado',
   'cliente',
   'factura',
   'reclamos',
@@ -103,7 +104,7 @@ const pagesNumber = computed(() => {
           <q-card-section>
             <span
               v-for="col in props.cols.filter(
-                  (col: any) => col.name !== 'desc' && col.name !== 'reclamos'
+                  (col: any) => col.name !== 'reclamos' && col.name !== 'respuesta_enproceso' && col.name !== 'respuesta_finalizado'
                 )"
               :key="col.name"
             >
@@ -127,6 +128,33 @@ const pagesNumber = computed(() => {
               </div>
               <div class="q-my-sm" v-else>
                 <strong>{{ col.label }}:</strong> {{ col.value }}
+              </div>
+            </span>
+
+            <span>
+              <div class="text-left" v-show="props.row.estado == 'En proceso'">
+                <strong>Respuesta al reclamo: </strong>
+                <span
+                  v-if="props.row.respuesta_enproceso"
+                  v-html="props.row.respuesta_enproceso"
+                ></span>
+                <span v-else v-html="props.row.respuesta_finalizado"></span>
+              </div>
+
+              <div class="text-left" v-show="props.row.estado == 'Finalizado'">
+                <div v-if="props.row.respuesta_enproceso" class="q-mb-sm">
+                  <strong> Respuesta al reclamo (En proceso): </strong>
+                  <span v-html="props.row.respuesta_enproceso"></span>
+                </div>
+                <div>
+                  <strong>
+                    Respuesta al reclamo:
+                    <span v-if="props.row.respuesta_enproceso">
+                      (Finalizado):
+                    </span>
+                  </strong>
+                  <span v-html="props.row.respuesta_finalizado"></span>
+                </div>
               </div>
             </span>
           </q-card-section>

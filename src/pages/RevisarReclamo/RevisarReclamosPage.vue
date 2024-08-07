@@ -89,6 +89,7 @@ const whichQuery = async () => {
           : null,
         cliente: detalle.nombre_reclamante,
         nombre_usuario: detalle.nombre_usuario,
+        respuesta_enproceso: detalle.respuesta_enproceso,
         respuesta_finalizado: detalle.respuesta_finalizado,
         id_detalle: detalle.id_detalle,
         reclamos: detalle.reclamos,

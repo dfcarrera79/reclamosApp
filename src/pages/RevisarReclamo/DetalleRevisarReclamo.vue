@@ -164,9 +164,29 @@ const pagesNumber = computed(() => {
               <strong>Encargado del reclamo:</strong>
               {{ props.row.nombre_usuario }}
             </div>
-            <div class="text-left" v-show="props.row.estado !== 'Pendiente'">
-              <strong>Respuesta al reclamo:</strong>
-              {{ props.row.respuesta_finalizado }}
+            <div class="text-left" v-show="props.row.estado == 'En proceso'">
+              <strong>Respuesta al reclamo: </strong>
+              <span
+                v-if="props.row.respuesta_enproceso"
+                v-html="props.row.respuesta_enproceso"
+              ></span>
+              <span v-else v-html="props.row.respuesta_finalizado"></span>
+            </div>
+
+            <div class="text-left" v-show="props.row.estado == 'Finalizado'">
+              <div v-if="props.row.respuesta_enproceso">
+                <strong> Respuesta al reclamo (En proceso): </strong>
+                <span v-html="props.row.respuesta_enproceso"></span>
+              </div>
+              <div>
+                <strong>
+                  Respuesta al reclamo
+                  <span v-if="props.row.respuesta_enproceso">
+                    (Finalizado):
+                  </span>
+                </strong>
+                <span v-html="props.row.respuesta_finalizado"></span>
+              </div>
             </div>
             <div class="row wrap">
               <div

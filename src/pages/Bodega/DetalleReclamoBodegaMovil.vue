@@ -329,10 +329,25 @@ const estadosFiltrados = ref(filtro);
                   <strong>Encargado del reclamo: </strong>
                   {{ props.row.nombre_usuario }}
                 </p>
-                <p class="q-mb-sm" v-show="estado !== 'PEN'">
+                <p class="q-mb-sm" v-show="estado == 'PRO'">
                   <strong>Respuesta al reclamo: </strong>
-                  <span v-html="props.row.respuesta_finalizado"></span>
+                  <span
+                    v-if="props.row.respuesta_enproceso"
+                    v-html="props.row.respuesta_enproceso"
+                  ></span>
+                  <span v-else v-html="props.row.respuesta_finalizado"></span>
                 </p>
+
+                <div class="q-mb-sm" v-show="estado == 'FIN'">
+                  <div v-if="props.row.respuesta_enproceso">
+                    <strong> Respuesta al reclamo (En proceso): </strong>
+                    <span v-html="props.row.respuesta_enproceso"></span>
+                  </div>
+                  <div>
+                    <strong>Respuesta al reclamo (Finalizado): </strong>
+                    <span v-html="props.row.respuesta_finalizado"></span>
+                  </div>
+                </div>
               </div>
             </q-card-section>
 

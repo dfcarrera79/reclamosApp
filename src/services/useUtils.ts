@@ -29,6 +29,7 @@ export const procesarObjetos = (objetos: Objetos[]) => {
     nro_factura: objeto.no_factura,
     fecha_factura: moment(objeto.fecha_factura).format('DD-MM-YYYY'),
     nombre_usuario: objeto.nombre_usuario,
+    respuesta_enproceso: objeto.respuesta_enproceso,
     respuesta_finalizado: objeto.respuesta_finalizado,
     reclamos: objeto.reclamos,
   }));

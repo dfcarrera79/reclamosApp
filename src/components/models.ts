@@ -152,6 +152,7 @@ export interface FilasReclamos {
   fecha_finalizado: string | null;
   cliente: string;
   nombre_usuario: string | null;
+  respuesta_enproceso: string | null;
   respuesta_finalizado: string | null;
   id_detalle: number;
   reclamos: Detalle[];
@@ -168,6 +169,7 @@ export interface Filas {
   nro_factura: string;
   fecha_factura: string;
   nombre_usuario: string | null;
+  respuesta_enproceso: string | null;
   respuesta_finalizado: string | null;
   reclamos: Detalle[];
 }
@@ -183,6 +185,7 @@ export interface Objetos {
   fecha_factura: string;
   fecha_enproceso: string | null;
   fecha_finalizado: string | null;
+  respuesta_enproceso: string | null;
   respuesta_finalizado: string | null;
   nombre_usuario: string | null;
   reclamos: Detalle[];
@@ -206,6 +209,7 @@ export interface DetallesReclamos {
   nombre_usuario: string | null;
   fecha_enproceso: string | null;
   fecha_finalizado: string | null;
+  respuesta_enproceso: string | null;
   respuesta_finalizado: string | null;
   reclamos: Detalle[];
 }
