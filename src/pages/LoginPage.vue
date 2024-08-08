@@ -46,35 +46,35 @@ const labelText = computed(() => {
   }
 });
 
-// const funcionIr = () => {
-//   const baseUrl = 'http://192.168.1.50:3006/#/login/';
+const funcionIr = () => {
+  const baseUrl = 'http://192.168.1.50:3006/#/login/';
 
-//   switch (appStore.appCodigo) {
-//     case 1:
-//       window.open(`${baseUrl}1`, '_blank');
-//       break;
-//     case 2:
-//       window.open(`${baseUrl}2`, '_blank');
-//       break;
-//     case 3:
-//       window.open(`${baseUrl}3`, '_blank');
-//       break;
-//     case 4:
-//       window.open(`${baseUrl}4`, '_blank');
-//       break;
-//     default:
-//       break;
-//   }
-// };
+  switch (appStore.appCodigo) {
+    case 1:
+      window.open(`${baseUrl}1`, '_blank');
+      break;
+    case 2:
+      window.open(`${baseUrl}2`, '_blank');
+      break;
+    case 3:
+      window.open(`${baseUrl}3`, '_blank');
+      break;
+    case 4:
+      window.open(`${baseUrl}4`, '_blank');
+      break;
+    default:
+      break;
+  }
+};
 
 onMounted(async () => {
   appStore.appCodigo = 2;
 
-  // const apiUrl =
-  //   process.env.API_URL ||
-  //   'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
+  const apiUrl =
+    process.env.API_URL ||
+    'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
 
-  const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
+  // const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
 
   appStore.setUrlApi(apiUrl);
 
@@ -268,7 +268,7 @@ const enviarCorreoRecuperacion = async () => {
         </div>
       </div>
 
-      <!-- <div class="q-pl-sm q-pt-sm">
+      <div class="q-pl-sm q-pt-sm">
         <q-btn
           outline
           rounded
@@ -277,7 +277,7 @@ const enviarCorreoRecuperacion = async () => {
           size="sm"
           @click="funcionIr"
         />
-      </div> -->
+      </div>
 
       <div class="row">
         <div

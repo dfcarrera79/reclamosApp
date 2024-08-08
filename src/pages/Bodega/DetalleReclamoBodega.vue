@@ -37,6 +37,8 @@ const fotos = ref<Archivo[]>([]);
 const newFilas = ref<Filas[]>([]);
 const visibleColumns = ref<string[]>([]);
 
+const expandedRow = ref<number | null>(null);
+
 const pagination = ref({
   sortBy: 'numero',
   descending: true,
@@ -47,6 +49,10 @@ const pagination = ref({
 const columnas = columnasDetalleReclamo;
 
 // Methods
+const toggleExpand = (rowId: number) => {
+  expandedRow.value = expandedRow.value === rowId ? null : rowId;
+};
+
 const handleButton = (mail: string, id: number) => {
   appStore.dialogo.email = mail;
   appStore.dialogo.id = id;
@@ -70,7 +76,6 @@ const whichQuery = async (pagina: number, rowsNumber: number) => {
     registrosPorPagina: rowsNumber, // 0 means all rows
   });
   const objetos: Objetos[] = respuesta.objetos;
-  console.log('[RESPUESTA]: ', respuesta);
   if (respuesta.error === 'S') {
     console.error('Error', respuesta.mensaje);
     return '';
@@ -161,7 +166,7 @@ const pagesNumber = computed(() => {
               round
               dense
               @click="
-                props.expand = !props.expand;
+                toggleExpand(props.row.nro_reclamo);
                 handleButton(props.row.email, props.row.nro_reclamo);
               "
               :icon="props.expand ? 'remove' : 'add'"
@@ -189,7 +194,7 @@ const pagesNumber = computed(() => {
             </template>
           </q-td>
         </q-tr>
-        <q-tr v-show="props.expand" :props="props">
+        <q-tr v-show="expandedRow === props.row.nro_reclamo" :props="props">
           <q-td colspan="100%">
             <q-select
               v-show="estado !== 'FIN'"
