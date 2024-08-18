@@ -36,3 +36,24 @@ export const procesarObjetos = (objetos: Objetos[]) => {
 
   return mergeObjectsByNroReclamo(processedFilas);
 };
+
+export const funcionIr = (code: number) => {
+  const baseUrl = 'http://192.168.1.50:3006/#/login/';
+
+  switch (code) {
+    case 1:
+      window.open(`${baseUrl}1`, '_blank');
+      break;
+    case 2:
+      window.open(`${baseUrl}2`, '_blank');
+      break;
+    case 3:
+      window.open(`${baseUrl}3`, '_blank');
+      break;
+    case 4:
+      window.open(`${baseUrl}4`, '_blank');
+      break;
+    default:
+      break;
+  }
+};

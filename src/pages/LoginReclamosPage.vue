@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAxios } from '../services/useAxios';
+import { funcionIr } from '../services/useUtils';
 import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '../stores/useAppStore';
 import { useMensajes } from '../services/useMensajes';
@@ -51,35 +52,14 @@ const labelText = computed(() => {
   }
 });
 
-const funcionIr = () => {
-  const baseUrl = 'http://192.168.1.50:3006/#/login/';
-
-  switch (appStore.appCodigo) {
-    case 1:
-      window.open(`${baseUrl}1`, '_blank');
-      break;
-    case 2:
-      window.open(`${baseUrl}2`, '_blank');
-      break;
-    case 3:
-      window.open(`${baseUrl}3`, '_blank');
-      break;
-    case 4:
-      window.open(`${baseUrl}4`, '_blank');
-      break;
-    default:
-      break;
-  }
-};
-
 onMounted(async () => {
   appStore.appCodigo = 2;
 
-  const apiUrl =
-    process.env.API_URL ||
-    'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
+  // const apiUrl =
+  //   process.env.API_URL ||
+  //   'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
 
-  // const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
+  const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
 
   appStore.setUrlApi(apiUrl);
 
@@ -180,6 +160,12 @@ const enviarCorreoRecuperacion = async () => {
     console.error('Error sending email:', error);
   }
 };
+
+const handleCerrar = () => {
+  ruc.value = '';
+  correoElectronico.value = '';
+  mostrarVentana.value = false;
+};
 </script>
 
 <template>
@@ -194,14 +180,14 @@ const enviarCorreoRecuperacion = async () => {
         <q-card-section>
           <q-input
             v-model="ruc"
-            debounce="750"
+            debounce="1000"
             label="RUC | CI | Pasaporte"
             dense
             :rules="rucRule"
           />
           <q-input
             v-model="correoElectronico"
-            debounce="750"
+            debounce="2000"
             label="Email"
             dense
             :rules="emailRule"
@@ -215,7 +201,7 @@ const enviarCorreoRecuperacion = async () => {
             @click="enviarCorreoRecuperacion()"
             :disable="!ruc || !correoElectronico"
           />
-          <q-btn flat label="Cerrar" @click="mostrarVentana = false" />
+          <q-btn flat label="Cerrar" @click="handleCerrar" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -285,16 +271,17 @@ const enviarCorreoRecuperacion = async () => {
         </div>
       </div>
 
-      <div class="q-pl-sm q-pt-sm">
+      <!-- <div class="row q-pl-sm q-pt-sm justify-center">
         <q-btn
           outline
           rounded
           color="primary"
           label="Conexión local"
           size="sm"
-          @click="funcionIr"
+          @click="funcionIr(appStore.appCodigo)"
+          :disable="opcion === null"
         />
-      </div>
+      </div> -->
 
       <div class="row">
         <div
