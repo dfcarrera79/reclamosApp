@@ -296,3 +296,8 @@ export interface RespuestaReporte {
   mensaje: string;
   objetos: Reporte[];
 }
+
+export interface Opcion {
+  label: string;
+  valor: number;
+}

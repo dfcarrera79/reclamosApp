@@ -69,13 +69,18 @@ const actualizarReclamo = async (id: number, est: string, mail: string) => {
   respuestaFinalizado.value = '';
   bodegaStore.actualizarFilas = true;
 };
+
+const handleCancelar = () => {
+  appStore.select = false;
+  respuestaFinalizado.value = '';
+};
 </script>
 
 <template>
   <q-dialog v-model="appStore.confirmarFinalizado" persistent>
     <q-card>
       <q-card-section class="row items-center">
-        <q-avatar icon="warning" color="primary" text-color="white" />
+        <q-avatar size="md" icon="warning" color="primary" text-color="white" />
         <span class="q-ml-sm">Respuesta al cliente sobre el reclamo:</span>
       </q-card-section>
       <q-card-section class="q-pa-md" style="max-width: 300px">
@@ -88,13 +93,14 @@ const actualizarReclamo = async (id: number, est: string, mail: string) => {
           label="Cancelar"
           color="primary"
           v-close-popup
-          @click="appStore.select = false"
+          @click="handleCancelar"
         />
         <q-btn
           flat
           label="Cambiar estado"
           color="primary"
           v-close-popup
+          :disable="respuestaFinalizado === ''"
           @click.prevent="
             actualizarReclamo(
               appStore.dialogo.id,
@@ -102,7 +108,19 @@ const actualizarReclamo = async (id: number, est: string, mail: string) => {
               appStore.dialogo.email
             )
           "
-        />
+        >
+          <q-tooltip
+            v-if="respuestaFinalizado === ''"
+            anchor="bottom middle"
+            self="top middle"
+            :offset="[10, 10]"
+          >
+            <strong class="text-caption"
+              >Para cambiar el estado del reclamo hay que escribir una
+              respuesta</strong
+            >
+          </q-tooltip>
+        </q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>

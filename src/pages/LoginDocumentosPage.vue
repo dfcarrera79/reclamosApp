@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { useAxios } from '../services/useAxios';
 import { useRouter, useRoute } from 'vue-router';
-import { SessionData } from '../components/models';
 import { useAppStore } from '../stores/useAppStore';
 import { useMensajes } from '../services/useMensajes';
 import { ref, onMounted, computed, watch } from 'vue';
+import { SessionData, Opcion } from '../components/models';
 import { useQuasar, QSpinnerFacebook, LocalStorage } from 'quasar';
 
 // Data
+const opcion = ref<Opcion | null>(null);
+const options = ref([
+  { label: 'Cliente Apromed', valor: 4 },
+  { label: 'Usuario Apromed', valor: 3 },
+]);
 const router = useRouter();
 const route = useRoute();
 const isPwd = ref(true);
@@ -100,10 +105,11 @@ const getTitleApp = computed(() =>
     : `PORTAL DE DOCUMENTOS V${appStore.appVersion}`
 );
 
-watch(
-  () => route.params.appcodigo,
-  async () => (appStore.appCodigo = parseInt(route.params.appcodigo as string))
-);
+watch(opcion, () => {
+  if (opcion.value !== null) {
+    appStore.appCodigo = opcion.value.valor;
+  }
+});
 
 const logearse = async () => {
   if (appStore.usuario.id.trim().length === 0) {
@@ -213,7 +219,7 @@ const enviarCorreoRecuperacion = async () => {
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-card class="shadow-8 bg-white" style="width: 300px; height: 260px">
+    <q-card class="shadow-8 bg-white" style="width: 300px; height: 310px">
       <div class="row bg-blue-8 justify-center q-pa-xs">
         <span
           class="text-h6 text-center text-white"
@@ -222,6 +228,16 @@ const enviarCorreoRecuperacion = async () => {
         >
       </div>
       <div class="row">
+        <div class="column col-xs-12 q-pa-sm">
+          <q-select
+            outlined
+            dense
+            v-model="opcion"
+            :options="options"
+            label="Elija su rol"
+            option-label="label"
+          />
+        </div>
         <div class="column col-xs-12 q-pa-sm">
           <q-input
             v-model="appStore.usuario.id"
@@ -264,6 +280,7 @@ const enviarCorreoRecuperacion = async () => {
             color="blue"
             label="Ingresar"
             @click="logearse()"
+            :disable="opcion === null"
           />
         </div>
       </div>
