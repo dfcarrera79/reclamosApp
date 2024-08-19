@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAxios } from '../services/useAxios';
-import { funcionIr } from '../services/useUtils';
+import { funcionIrReclamos } from '../services/useUtils';
 import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '../stores/useAppStore';
 import { useMensajes } from '../services/useMensajes';
@@ -55,11 +55,11 @@ const labelText = computed(() => {
 onMounted(async () => {
   appStore.appCodigo = 2;
 
-  // const apiUrl =
-  //   process.env.API_URL ||
-  //   'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
+  const apiUrl =
+    process.env.API_URL ||
+    'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
 
-  const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
+  // const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
 
   appStore.setUrlApi(apiUrl);
 
@@ -271,17 +271,17 @@ const handleCerrar = () => {
         </div>
       </div>
 
-      <!-- <div class="row q-pl-sm q-pt-sm justify-center">
+      <div class="row q-pl-sm q-pt-sm justify-center">
         <q-btn
           outline
           rounded
           color="primary"
           label="Conexión local"
           size="sm"
-          @click="funcionIr(appStore.appCodigo)"
+          @click="funcionIrReclamos"
           :disable="opcion === null"
         />
-      </div> -->
+      </div>
 
       <div class="row">
         <div

@@ -57,3 +57,13 @@ export const funcionIr = (code: number) => {
       break;
   }
 };
+
+export const funcionIrReclamos = () => {
+  const baseUrl = 'http://192.168.1.50:3006/#/loginReclamos';
+  window.open(baseUrl, '_blank');
+};
+
+export const funcionIrDocumentos = () => {
+  const baseUrl = 'http://192.168.1.50:3006/#/loginDocumentos';
+  window.open(baseUrl, '_blank');
+};
