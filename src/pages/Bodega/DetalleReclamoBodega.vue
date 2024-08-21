@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue';
 import DialogoEstado from './DialogoEstado.vue';
 import { useAxios } from '../../services/useAxios';
 import { useAppStore } from '../../stores/useAppStore';
+import MotivosPrioridad from './MotivosPrioridad.vue';
 import { procesarObjetos } from '../../services/useUtils';
 import { useBodegaStore } from '../../stores/useBodegaStore';
 import ArchivoDialog from '../../components/ArchivoDialog.vue';
@@ -179,14 +180,30 @@ const pagesNumber = computed(() => {
             :props="props"
           >
             <template v-if="col.name === 'prioridad'">
-              <template v-if="col.value == 'Alta'">
+              <template v-if="col.value == 'Muy alta'">
                 <q-badge rounded color="negative"> {{ col.value }} </q-badge>
+                <br />
+                <MotivosPrioridad :reclamos="props.row.reclamos" />
+              </template>
+              <template v-else-if="col.value == 'Alta'">
+                <q-badge rounded color="amber-10"> {{ col.value }} </q-badge>
+                <br />
+                <MotivosPrioridad :reclamos="props.row.reclamos" />
               </template>
               <template v-else-if="col.value == 'Media'">
                 <q-badge rounded color="warning"> {{ col.value }} </q-badge>
+                <br />
+                <MotivosPrioridad :reclamos="props.row.reclamos" />
+              </template>
+              <template v-else-if="col.value == 'Baja'">
+                <q-badge rounded color="positive"> {{ col.value }} </q-badge>
+                <br />
+                <MotivosPrioridad :reclamos="props.row.reclamos" />
               </template>
               <template v-else>
                 <q-badge rounded color="grey-5"> {{ col.value }} </q-badge>
+                <br />
+                <MotivosPrioridad :reclamos="props.row.reclamos" />
               </template>
             </template>
             <template v-else>

@@ -54,7 +54,15 @@ export const columnasVisiblesMovil = (est: string): string[] => {
 // Función para calcular la prioridad
 const calcularPrioridad = (row: Filas): string => {
   const prioridad = Math.min(...row.reclamos.map((el) => el.motivo.prioridad));
-  return prioridad === 1 ? 'Alta' : prioridad === 2 ? 'Media' : 'Mínima';
+  return prioridad === 1
+    ? 'Muy alta'
+    : prioridad === 2
+    ? 'Alta'
+    : prioridad === 3
+    ? 'Media'
+    : prioridad === 4
+    ? 'Baja'
+    : 'Mínima';
 };
 
 // Columnas comunes

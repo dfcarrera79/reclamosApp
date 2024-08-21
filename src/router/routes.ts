@@ -6,7 +6,7 @@ const estaLogeado = (to, from, next) => {
   const appStore = useAppStore();
   if (appStore.estaLogeado === false) {
     return next({
-      path: `/login/${appStore.appCodigo}`,
+      path: '/loginReclamos',
       query: { redirect: to.fullPath },
     });
   }

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { Filas, Objetos } from '../components/models';
+import { Detalle, Filas, Objetos } from '../components/models';
 
 export const mergeObjectsByNroReclamo = (dataArray: Filas[]) => {
   const mergedObjects: { [key: number]: Filas } = {};
@@ -66,4 +66,27 @@ export const funcionIrReclamos = () => {
 export const funcionIrDocumentos = () => {
   const baseUrl = 'http://192.168.1.50:3006/#/loginDocumentos';
   window.open(baseUrl, '_blank');
+};
+
+export const obtenerMotivosConPrioridadMasBaja = (
+  reclamos: Detalle[]
+): string => {
+  if (!reclamos || reclamos.length === 0) {
+    return '';
+  }
+
+  // Encontrar la prioridad más baja
+  const prioridadMinima = reclamos.reduce<number>((minPrioridad, reclamo) => {
+    return Math.min(minPrioridad, reclamo.motivo.prioridad);
+  }, Infinity);
+
+  // Usar un Set para almacenar motivos únicos con la prioridad más baja
+  const motivosUnicos = new Set(
+    reclamos
+      .filter((reclamo) => reclamo.motivo.prioridad === prioridadMinima)
+      .map((reclamo) => reclamo.motivo.nombre_motivo)
+  );
+
+  // Unir los motivos únicos en una cadena separada por comas
+  return Array.from(motivosUnicos).join(', ');
 };
