@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DialogoEstado from './DialogoEstado.vue';
+import DialogoMotivo from './DialogoMotivo.vue';
 import { useAxios } from '../../services/useAxios';
 import { computed, nextTick, ref, watch } from 'vue';
 import { useAppStore } from '../../stores/useAppStore';
@@ -35,6 +36,9 @@ interface TableColumn {
 }
 
 // Data
+const cambiar = ref(false);
+const idProducto = ref(0);
+const numReclamo = ref(0);
 const page = ref(1);
 const pageSize = 50;
 const alert = ref(false);
@@ -145,6 +149,16 @@ const filtro = computed(() => {
 });
 
 const estadosFiltrados = ref(filtro);
+
+const handleEditarMotivo = (id: number, nroReclamo: number) => {
+  cambiar.value = true;
+  idProducto.value = id;
+  numReclamo.value = nroReclamo;
+};
+
+const renovarMotivo = async () => {
+  await whichQuery(page.value, pageSize);
+};
 </script>
 
 <template>
@@ -155,6 +169,12 @@ const estadosFiltrados = ref(filtro);
   />
 
   <DialogoEstado />
+  <DialogoMotivo
+    v-model:cambiar="cambiar"
+    v-model:idProducto="idProducto"
+    v-model:numReclamo="numReclamo"
+    @renovarMotivo="renovarMotivo"
+  />
 
   <div>
     <q-table
@@ -211,11 +231,17 @@ const estadosFiltrados = ref(filtro);
             :props="props"
           >
             <template v-if="col.name === 'prioridad'">
-              <template v-if="col.value == 'Alta'">
+              <template v-if="col.value == 'Muy alta'">
                 <q-badge rounded color="negative"> {{ col.value }} </q-badge>
+              </template>
+              <template v-else-if="col.value == 'Alta'">
+                <q-badge rounded color="amber-10"> {{ col.value }} </q-badge>
               </template>
               <template v-else-if="col.value == 'Media'">
                 <q-badge rounded color="warning"> {{ col.value }} </q-badge>
+              </template>
+              <template v-else-if="col.value == 'Baja'">
+                <q-badge rounded color="positive"> {{ col.value }} </q-badge>
               </template>
               <template v-else>
                 <q-badge rounded color="grey-5"> {{ col.value }} </q-badge>
@@ -240,13 +266,23 @@ const estadosFiltrados = ref(filtro);
                   :key="col.name"
                 >
                   <template v-if="col.name === 'prioridad'">
-                    <template v-if="col.value == 'Alta'">
+                    <template v-if="col.value == 'Muy alta'">
                       <q-badge rounded color="negative">
+                        {{ col.value }}
+                      </q-badge>
+                    </template>
+                    <template v-else-if="col.value == 'Alta'">
+                      <q-badge rounded color="amber-10">
                         {{ col.value }}
                       </q-badge>
                     </template>
                     <template v-else-if="col.value == 'Media'">
                       <q-badge rounded color="warning">
+                        {{ col.value }}
+                      </q-badge>
+                    </template>
+                    <template v-else-if="col.value == 'Baja'">
+                      <q-badge rounded color="positive">
                         {{ col.value }}
                       </q-badge>
                     </template>
@@ -376,14 +412,29 @@ const estadosFiltrados = ref(filtro);
                 >
                   <strong>Archivos:</strong> Ningún archivo adjunto
                 </p>
-                <q-btn
-                  v-if="!reclamo.archivos.every((item: number) => item === 0)"
-                  size="11px"
-                  outline
-                  color="primary"
-                  @click="mostrarArchivos(reclamo.archivos)"
-                  >Archivos</q-btn
-                >
+                <span class="row justify-between">
+                  <q-btn
+                    v-if="!reclamo.archivos.every((item: number) => item === 0)"
+                    size="11px"
+                    outline
+                    color="primary"
+                    @click="mostrarArchivos(reclamo.archivos)"
+                    >Archivos</q-btn
+                  >
+                  <q-btn
+                    size="11px"
+                    outline
+                    color="primary"
+                    @click="
+                      handleEditarMotivo(
+                        reclamo.producto.id,
+                        props.row.nro_reclamo
+                      )
+                    "
+                    >Cambiar motivo</q-btn
+                  >
+                </span>
+
                 <q-separator />
               </div>
             </q-card-section>

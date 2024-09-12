@@ -52,7 +52,11 @@ const changePassword = async (ruc: string) => {
         >Por favor, ingrese una contraseña personal para asegurar su cuenta.
       </strong>
     </p>
-    <q-form @submit="changePassword(ruc)" class="q-gutter-md q-px-md">
+    <q-form
+      @submit="changePassword(ruc)"
+      class="q-gutter-md q-px-md"
+      style="max-width: 300px"
+    >
       <q-input
         outlined
         dense

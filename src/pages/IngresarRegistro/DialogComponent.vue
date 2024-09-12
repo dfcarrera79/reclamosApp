@@ -2,8 +2,7 @@
 import moment from 'moment';
 import { useQuasar } from 'quasar';
 import { useAxios } from '../../services/useAxios';
-import { useAppStore } from '../../stores/useAppStore';
-import { inject, ref, computed, watch, onMounted } from 'vue';
+import { inject, ref, computed, watch } from 'vue';
 import { Documento, Respuesta } from '../../components/models';
 
 // Data
@@ -24,8 +23,7 @@ const showDialog = inject<boolean>('showDialog');
 const documents = inject<Documento[]>('documentos');
 
 const path = process.env.DOCUMENT_PATH;
-const replacedPath = ref('');
-const appStore = useAppStore();
+const replacedPath = ref<string>(process.env.REPLACED_PATH ?? '');
 const $q = useQuasar();
 const registro = ref<File | null>(null);
 const { post, put, deletes } = useAxios();
@@ -79,25 +77,6 @@ const formatDateTime = (dateTimeString: string | undefined) => {
   const formattedDate = date.format('DD/MM/YY HH:mm');
   return formattedDate;
 };
-
-// const formatDateTime = (dateTimeString: string | undefined) => {
-//   if (!dateTimeString) {
-//     return '';
-//   }
-
-//   const date = new Date(dateTimeString);
-//   const options = {
-//     year: '2-digit',
-//     month: '2-digit',
-//     day: '2-digit',
-//     hour: '2-digit',
-//     minute: '2-digit',
-//     hour12: false,
-//   };
-//   const formatter = new Intl.DateTimeFormat('es-ES', options);
-//   const formattedDate = formatter.format(date);
-//   return formattedDate;
-// };
 
 const registrarDocumento = async (doc: File | null) => {
   if (doc) {
@@ -234,14 +213,6 @@ const downloadDocument = (filePath: string | undefined) => {
   // Open the URL in a new window to trigger the download
   window.open(url, '_blank');
 };
-
-onMounted(() => {
-  if (appStore.local) {
-    replacedPath.value = 'http://192.168.1.50:3009/static/';
-  } else {
-    replacedPath.value = 'https://apromedfarmaloja-cloud.com:3010/static/';
-  }
-});
 </script>
 
 <template>
@@ -284,7 +255,7 @@ onMounted(() => {
             <q-file
               filled
               bottom-slots
-              accept=".pdf"
+              accept=".pdf, image/*"
               v-model="documentosActualizados[index]"
               label="Análisis de lote"
               counter
@@ -363,7 +334,7 @@ onMounted(() => {
             append
             bottom-slots
             v-model="documentos"
-            accept=".pdf"
+            accept=".pdf, image/*"
             label="Análisis de lote"
             counter
           >
@@ -417,7 +388,7 @@ onMounted(() => {
             filled
             bottom-slots
             v-model="registro"
-            accept=".pdf"
+            accept=".pdf, image/*"
             label="Registro sanitario"
             counter
             max-files="1"

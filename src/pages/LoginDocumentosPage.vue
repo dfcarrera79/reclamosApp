@@ -278,7 +278,6 @@ const handleCerrar = () => {
           label="Conexión local"
           size="sm"
           @click="funcionIrDocumentos"
-          :disable="opcion === null"
         />
       </div>
 

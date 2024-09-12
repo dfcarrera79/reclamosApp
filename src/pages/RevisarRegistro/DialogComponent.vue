@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import moment from 'moment';
+import { inject, ref } from 'vue';
+import { Documento } from '../../components/models';
+
+// Data
+const replacedPath = ref<string>(process.env.REPLACED_PATH ?? '');
+const path = process.env.DOCUMENT_PATH;
+const registry = inject<Documento>('registro');
+const showDialog = inject<boolean>('showDialog');
+const documents = inject<Documento[]>('documentos');
+
+// Methods
+const formatDateTime = (dateTimeString: string | undefined) => {
+  const date = moment(dateTimeString);
+  const formattedDate = date.format('DD/MM/YY HH:mm');
+  return formattedDate;
+};
+
+const downloadDocument = (filePath: string | undefined) => {
+  const url = filePath?.replace(path as string, replacedPath.value);
+
+  // Open the URL in a new window to trigger the download
+  window.open(url, '_blank');
+};
+</script>
+
 <template>
   <q-dialog v-model="showDialog">
     <q-card class="my-card q-pa-sm" flat bordered>
@@ -71,40 +98,3 @@
     </q-card>
   </q-dialog>
 </template>
-
-<script setup lang="ts">
-import moment from 'moment';
-import { inject, onMounted, ref } from 'vue';
-import { Documento } from '../../components/models';
-import { useAppStore } from '../../stores/useAppStore';
-
-// Data
-const replacedPath = ref('');
-const appStore = useAppStore();
-const path = process.env.DOCUMENT_PATH;
-const registry = inject<Documento>('registro');
-const showDialog = inject<boolean>('showDialog');
-const documents = inject<Documento[]>('documentos');
-
-// Methods
-const formatDateTime = (dateTimeString: string | undefined) => {
-  const date = moment(dateTimeString);
-  const formattedDate = date.format('DD/MM/YY HH:mm');
-  return formattedDate;
-};
-
-const downloadDocument = (filePath: string | undefined) => {
-  const url = filePath?.replace(path as string, replacedPath.value);
-
-  // Open the URL in a new window to trigger the download
-  window.open(url, '_blank');
-};
-
-onMounted(() => {
-  if (appStore.local) {
-    replacedPath.value = 'http://192.168.1.50:3009/static/';
-  } else {
-    replacedPath.value = 'https://apromedfarmaloja-cloud.com:3010/static/';
-  }
-});
-</script>

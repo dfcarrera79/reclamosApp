@@ -279,7 +279,6 @@ const handleCerrar = () => {
           label="Conexión local"
           size="sm"
           @click="funcionIrReclamos"
-          :disable="opcion === null"
         />
       </div>
 

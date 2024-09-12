@@ -9,9 +9,9 @@ import VerificarVersion from '../../components/VerificarVersion.vue';
 import DetalleReclamoBodegaMovil from './DetalleReclamoBodegaMovil.vue';
 
 // Data
-const appStore = useAppStore();
-const { get } = useAxios();
 const estado = ref('');
+const { get } = useAxios();
+const appStore = useAppStore();
 const splitterModel = ref(20);
 
 //  Methods

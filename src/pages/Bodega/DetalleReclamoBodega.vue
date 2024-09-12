@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import DialogoEstado from './DialogoEstado.vue';
+import DialogoMotivo from './DialogoMotivo.vue';
 import { useAxios } from '../../services/useAxios';
-import { useAppStore } from '../../stores/useAppStore';
 import MotivosPrioridad from './MotivosPrioridad.vue';
+import { useAppStore } from '../../stores/useAppStore';
 import { procesarObjetos } from '../../services/useUtils';
 import { useBodegaStore } from '../../stores/useBodegaStore';
 import ArchivoDialog from '../../components/ArchivoDialog.vue';
@@ -28,6 +29,9 @@ const props = defineProps<{
 // Data
 const page = ref(1);
 const alert = ref(false);
+const cambiar = ref(false);
+const idProducto = ref(0);
+const numReclamo = ref(0);
 const reclamos = ref([]);
 const seleccion = ref('');
 const { get } = useAxios();
@@ -127,11 +131,27 @@ const estadosFiltrados = ref(filtro);
 const pagesNumber = computed(() => {
   return Math.ceil(appStore.numFilas / pagination.value.rowsPerPage);
 });
+
+const handleEditarMotivo = (id: number, nroReclamo: number) => {
+  cambiar.value = true;
+  idProducto.value = id;
+  numReclamo.value = nroReclamo;
+};
+
+const renovarMotivo = async () => {
+  await whichQuery(page.value, pagination.value.rowsPerPage);
+};
 </script>
 
 <template>
   <ArchivoDialog v-model:alert="alert" v-model:fotos="fotos" />
   <DialogoEstado />
+  <DialogoMotivo
+    v-model:cambiar="cambiar"
+    v-model:idProducto="idProducto"
+    v-model:numReclamo="numReclamo"
+    @renovarMotivo="renovarMotivo"
+  />
   <div>
     <q-table
       flat
@@ -288,6 +308,21 @@ const pagesNumber = computed(() => {
                     <p class="q-mb-none text-h7">
                       {{ reclamo.producto.nombre }}
                     </p>
+                    <q-btn
+                      size="xs"
+                      color="primary"
+                      round
+                      dense
+                      icon="edit"
+                      @click="
+                        handleEditarMotivo(
+                          reclamo.producto.id,
+                          props.row.nro_reclamo
+                        )
+                      "
+                    >
+                      <q-tooltip>Editar el motivo</q-tooltip>
+                    </q-btn>
                   </q-card-section>
 
                   <q-separator inset />
@@ -297,6 +332,7 @@ const pagesNumber = computed(() => {
                       <strong>Motivo:</strong>
                       {{ reclamo.motivo.nombre_motivo }}
                     </p>
+
                     <p class="q-mb-none text-left">
                       <strong>Detalle: </strong>
                       <span v-html="reclamo.comentario"></span>
