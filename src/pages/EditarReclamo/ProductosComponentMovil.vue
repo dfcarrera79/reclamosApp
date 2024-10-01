@@ -116,7 +116,7 @@ const pagination = {
                   color="primary"
                   round
                   dense
-                  @click="enviarReclamo(props.row), enviarFila(props.row.id)"
+                  @click="enviarReclamo(props.row), enviarFila(props.row)"
                   icon="add"
                 />
               </div>

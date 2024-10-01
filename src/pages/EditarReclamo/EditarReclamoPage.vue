@@ -49,6 +49,23 @@ const reclamos = ref<Reclamos>({
 const detalles = ref<Detalle[]>([]);
 
 // Methods
+const verificarProductoEnReclamo = async (rowId: number) => {
+  try {
+    const respuesta = await get('/reclamo/verificar_reclamo_existente', {
+      idProducto: rowId,
+      nroFactura: factura.value,
+    });
+
+    if (respuesta.error === 'N') {
+      return respuesta.objetos[0];
+    } else {
+      return { id_reclamo: 0 };
+    }
+  } catch (error) {
+    console.error('Error occurred while fetching data:', error);
+  }
+};
+
 onMounted(async () => {
   const respuesta = await get('/motivo/obtener_motivos', {});
   if (respuesta.error === 'S') {
@@ -196,18 +213,28 @@ const procesarEnvio = () => {
   filasOriginales.value = [];
 };
 
-const agregarReclamo = (event: Producto): void => {
-  detalles.value.push({
-    producto: event,
-    motivo: {
-      id_motivo: 0,
-      nombre_motivo: '',
-      prioridad: 3,
-    },
-    comentario: '',
-    usuario: appStore.usuario.razon_social,
-    archivos: [0, 0, 0],
-  });
+const agregarReclamo = async (event: Producto) => {
+  let producto = await verificarProductoEnReclamo(event.id);
+
+  if (producto.id_reclamo != 0) {
+    mostrarError(
+      `Ya existe un reclamo para este producto en el ticket de reclamo  ${producto.id_reclamo}. Por favor, seleccione otro producto.`,
+      'center'
+    );
+    return;
+  } else {
+    detalles.value.push({
+      producto: event,
+      motivo: {
+        id_motivo: 0,
+        nombre_motivo: '',
+        prioridad: 3,
+      },
+      comentario: '',
+      usuario: appStore.usuario.razon_social,
+      archivos: [0, 0, 0],
+    });
+  }
 };
 
 const insertarFila = (event: number) => {
@@ -221,14 +248,18 @@ const insertarFila = (event: number) => {
   ];
 };
 
-const quitarFila = (event: number) => {
-  const index = filas.value.findIndex((x) => x.id === event);
-  if (index > -1) {
-    // only splice array when item is found
-    filas.value = [
-      ...filas.value.slice(0, index),
-      ...filas.value.slice(index + 1),
-    ];
+const quitarFila = async (event: Producto) => {
+  let producto = await verificarProductoEnReclamo(event.id);
+
+  if (producto.id_reclamo == 0) {
+    const index = filas.value.findIndex((x) => x.id === event.id);
+    if (index > -1) {
+      // only splice array when item is found
+      filas.value = [
+        ...filas.value.slice(0, index),
+        ...filas.value.slice(index + 1),
+      ];
+    }
   }
 };
 
