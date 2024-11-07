@@ -1,6 +1,9 @@
 import { Dialog, Notify } from 'quasar';
 
 export function formatearFactura(numero: string): string {
+  if (!numero) {
+    return '';
+  }
   const partes = numero.split('-').map((part) => part.replace(/^0+/, '')); // Eliminar ceros a la izquierda
   const primeraParte = partes[0].padStart(3, '0'); // Rellenar con ceros a la izquierda si es necesario
   const segundaParte = partes[1].padStart(3, '0'); // Rellenar con ceros a la izquierda si es necesario

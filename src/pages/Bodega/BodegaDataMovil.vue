@@ -4,6 +4,7 @@ import {
   RespuestaResponse,
   RespuestaNumeroProductos,
 } from '../../components/models';
+import { QSelect } from 'quasar';
 import { ref, onMounted, nextTick, computed, watch } from 'vue';
 import { useAxios } from '../../services/useAxios';
 import { useAppStore } from '../../stores/useAppStore';
@@ -114,7 +115,7 @@ const filterProductsFn = (
   });
 };
 
-const onScroll = ({ to, ref }: { to: number; ref: any }) => {
+const onScroll = ({ to, ref }: { to: number; ref: QSelect }) => {
   const lastIndex = opcionesProductos.value.length - 1;
   if (
     loading.value !== true &&
@@ -135,6 +136,12 @@ const onScroll = ({ to, ref }: { to: number; ref: any }) => {
 
 watch(nextPage, async () => {
   obtenerProductos(nextPage.value, pageSize, filtrado.value);
+});
+
+watch(value, (newValue) => {
+  if (newValue) {
+    window.location.reload(); // Recarga la página
+  }
 });
 </script>
 

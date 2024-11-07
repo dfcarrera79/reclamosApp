@@ -6,8 +6,8 @@ import { Motivo, Respuesta } from '../../components/models';
 
 const $q = useQuasar();
 const cambiar = defineModel<boolean>('cambiar', { required: true });
-const idProducto = defineModel<boolean>('idProducto', { required: true });
-const numReclamo = defineModel<boolean>('numReclamo', { required: true });
+const idProducto = defineModel<number>('idProducto', { required: true });
+const numReclamo = defineModel<number>('numReclamo', { required: true });
 
 const emits = defineEmits(['renovarMotivo']);
 
