@@ -91,6 +91,14 @@ const procesarFormulario = async () => {
     return;
   }
 
+  if (detalles.value.length !== 0) {
+    mostrarError(
+      'No puede consultar productos en otra factura mientras tenga productos en proceso de reclamo. Debe enviar o cancelar el reclamo para continuar.',
+      'center'
+    );
+    return;
+  }
+
   // Verificar que el trimmedRuc tenga una longitud de 10 o de 13
   if (trimmedRuc.length !== 10 && trimmedRuc.length !== 13) {
     mostrarError(
