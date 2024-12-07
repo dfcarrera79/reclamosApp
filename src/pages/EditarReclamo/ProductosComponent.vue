@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Producto } from '../../components/models';
 import { columnasEditarReclamo } from '../../services/useColumnas';
+import { AuditoriaObject, Producto } from '../../components/models';
+import TablaAuditoria from '../../components/TablaAuditoria.vue';
 
 // Data
+const mostrarAuditoria = ref(false);
+
 const filas = defineModel<Producto[]>('filas', { required: true });
+const auditoria = defineModel<AuditoriaObject[]>('auditoria', {
+  required: true,
+});
+
 const columnas = columnasEditarReclamo;
 
 /* defined emits*/
@@ -36,6 +43,34 @@ const pagination = {
 
 <template>
   <div class="q-pa-none">
+    <q-dialog v-model="mostrarAuditoria" full-width>
+      <q-card class="row justify-center">
+        <q-card-section class="row items-center no-wrap">
+          <div class="column">
+            <div class="text-h6 text-primary">AUDITORÍA</div>
+            <TablaAuditoria v-model:auditoria="auditoria" />
+          </div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section> </q-card-section>
+        <!-- <q-card-actions vertical>
+          <q-item
+            clickable
+            v-ripple
+            active-class="my-menu-link"
+            @click="eliminarEmpresa"
+          >
+            <q-item-section avatar>
+              <q-icon name="delete" color="red-5" />
+            </q-item-section>
+            <q-item-section>
+              <span class="text-subtitle1"> Eliminar Empresa </span>
+            </q-item-section>
+          </q-item>
+        </q-card-actions> -->
+      </q-card>
+    </q-dialog>
+
     <q-table
       v-if="filas.length > 0"
       class="text-h6 text-grey-8 justify-center"
@@ -57,9 +92,26 @@ const pagination = {
 
       <template v-slot:top>
         <div class="column">
-          <p class="text-primary text-h6" style="font-family: 'Bebas Neue'">
-            PRODUCTOS EN FACTURA
-          </p>
+          <div class="row">
+            <p class="text-primary text-h6" style="font-family: 'Bebas Neue'">
+              PRODUCTOS EN FACTURA
+            </p>
+            <q-btn
+              class="q-mb-md q-ml-md"
+              outline
+              color="primary"
+              no-caps
+              dense
+              @click="mostrarAuditoria = !mostrarAuditoria"
+            >
+              <div class="row items-center no-wrap q-pa-none">
+                <div class="text-center text-caption">
+                  <strong>Auditoria</strong>
+                </div>
+              </div>
+            </q-btn>
+          </div>
+
           <p class="text-caption">
             Utilice el botón a la derecha del producto para detallar el reclamo
           </p>

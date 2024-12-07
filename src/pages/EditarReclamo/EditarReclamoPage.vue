@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import {
   Arch,
-  Detalle,
-  Motivo,
-  Reclamos,
   Item,
+  Motivo,
+  Detalle,
+  Reclamos,
   Producto,
   Respuesta,
+  AuditoriaObject,
 } from '../../components/models';
 import { useQuasar } from 'quasar';
 import { ref, onMounted } from 'vue';
@@ -34,6 +35,7 @@ const ruc = ref(
 );
 const factura = ref('');
 const nuevaFactura = ref('');
+const auditoria = ref<AuditoriaObject[]>([]);
 const filasOriginales = ref<Producto[]>([]);
 let originalRows: Producto[];
 const filas = ref(filasOriginales);
@@ -116,6 +118,12 @@ const procesarFormulario = async () => {
 
   try {
     const productos = await get('/reclamo/obtener_productos/', formulario);
+
+    const audi = await get('/reclamo/obtener_auditoria', formulario);
+
+    auditoria.value = audi.objetos;
+
+    console.log('[AUDITORÍA]: ', JSON.stringify(auditoria.value));
 
     if (!productos || !productos.objetos) {
       throw new Error('La respuesta del servidor no contiene productos.');
@@ -360,6 +368,7 @@ const renovarArchivo3 = (event: Detalle) => {
           <ProductosComponent
             v-if="filas.length > 0"
             v-model:filas="filas"
+            v-model:auditoria="auditoria"
             @agregarReclamo="agregarReclamo($event)"
             @quitarFila="quitarFila($event)"
           />

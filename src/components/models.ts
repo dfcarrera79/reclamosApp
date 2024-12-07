@@ -301,3 +301,21 @@ export interface Opcion {
   label: string;
   valor: number;
 }
+export interface AuditoriaObject {
+  doc_codigo: number;
+  doc_acro: string;
+  compro: string;
+  comadc: string;
+  fecreg: string;
+  clpid: string;
+  clpdescri: string;
+  clp_descri: string;
+  numitems: number;
+  monto: number;
+  login: string;
+  fecha: string;
+  concepto: string;
+  fpago: string;
+  detalle: string;
+  identicador: string;
+}
