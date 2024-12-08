@@ -8,7 +8,7 @@ import {
   Producto,
   Respuesta,
   AuditoriaObject,
-} from '../../components/models';
+} from 'components/models';
 import { useQuasar } from 'quasar';
 import { ref, onMounted } from 'vue';
 import FormComponent from './FormComponent.vue';
@@ -389,6 +389,9 @@ const renovarArchivo3 = (event: Detalle) => {
           <ProductosComponentMovil
             class="xs"
             :filas="filas"
+            v-model:auditoria="auditoria"
+            v-model:ruc="ruc"
+            v-model:factura="factura"
             @agregarReclamo="agregarReclamo($event)"
             @quitarFila="quitarFila($event)"
           />

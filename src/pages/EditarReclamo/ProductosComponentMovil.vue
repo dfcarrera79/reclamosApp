@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { QTableProps } from 'quasar';
-import { Producto } from '../../components/models';
+import { useAppStore } from '../../stores/useAppStore';
+import TablaAuditoria from '../../components/TablaAuditoria.vue';
+import { AuditoriaObject, Producto } from '../../components/models';
 
 // Data
+const appStore = useAppStore();
 const columnas: QTableProps['columns'] = [
   { name: 'id', align: 'left', label: 'ID', field: 'id' },
   {
@@ -16,9 +19,17 @@ const columnas: QTableProps['columns'] = [
 ];
 
 /* defined props */
-const props = defineProps<{
-  filas: Producto[];
-}>();
+const mostrarAuditoria = ref(false);
+const filas = defineModel<Producto[]>('filas', { required: true });
+const auditoria = defineModel<AuditoriaObject[]>('auditoria', {
+  required: true,
+});
+const ruc = defineModel<string>('ruc', {
+  required: true,
+});
+const factura = defineModel<string>('factura', {
+  required: true,
+});
 
 /* defined emits*/
 const emit = defineEmits(['agregarReclamo', 'quitarFila']);
@@ -43,15 +54,51 @@ const pagination = {
 
 <template>
   <div class="q-pa-none">
+    <q-dialog v-model="mostrarAuditoria">
+      <q-card class="my-card">
+        <q-toolbar>
+          <q-toolbar-title
+            ><span class="text-h6 text-primary">AUDITORÍA</span>
+          </q-toolbar-title>
+
+          <q-btn flat round dense icon="close" v-close-popup />
+        </q-toolbar>
+        <q-card-section class="row items-center q-pt-xs">
+          <div class="gt-xs">
+            <strong class="text-weight-bold text-primary">RUC: </strong>
+            {{ ruc }}
+            <strong class="text-weight-bold text-primary q-ml-md"
+              >Factura:
+            </strong>
+            {{ factura }}
+          </div>
+
+          <div class="column xs">
+            <div>
+              <strong class="text-weight-bold text-primary">RUC: </strong>
+              {{ ruc }}
+            </div>
+            <div>
+              <strong class="text-weight-bold text-primary">Factura: </strong>
+              {{ factura }}
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <TablaAuditoria v-model:auditoria="auditoria" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
     <q-table
-      v-if="props.filas.length > 0"
+      v-if="filas.length > 0"
       class="text-h6 text-grey-8 justify-center"
       style="max-height: 325px"
       flat
       bordered
       no-data-label="Datos no disponibles"
       hide-no-data
-      :rows="props.filas"
+      :rows="filas"
       :columns="columnas"
       :filter="filter"
       row-key="id"
@@ -73,7 +120,22 @@ const pagination = {
           >
             PRODUCTOS EN FACTURA
           </p>
-          <div class="justify-end">
+          <!-- <q-btn
+            class="q-mb-md q-ml-md"
+            outline
+            color="primary"
+            no-caps
+            dense
+            @click="mostrarAuditoria = !mostrarAuditoria"
+            v-show="appStore.appCodigo === appStore.APP_USUARIO"
+          >
+            <div class="row items-center no-wrap q-pa-none">
+              <div class="text-center text-caption">
+                <strong>Auditoria</strong>
+              </div>
+            </div>
+          </q-btn> -->
+          <div class="justify-end column">
             <q-input
               style="align-right"
               input-class="text-right"
@@ -90,6 +152,21 @@ const pagination = {
                 <q-icon name="search" />
               </template>
             </q-input>
+            <q-btn
+              class="q-mb-md q-ml-md"
+              outline
+              color="primary"
+              no-caps
+              dense
+              @click="mostrarAuditoria = !mostrarAuditoria"
+              v-show="appStore.appCodigo === appStore.APP_USUARIO"
+            >
+              <div class="row items-center no-wrap q-pa-none">
+                <div class="text-center text-caption">
+                  <strong>Auditoria</strong>
+                </div>
+              </div>
+            </q-btn>
           </div>
         </div>
       </template>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useQuasar } from 'quasar';
 import { AuditoriaObject } from '../components/models';
 import { columnasAuditoria, columnasDetalles } from '../components/columns';
 
 // Data
+const $q = useQuasar();
 const columns = columnasAuditoria;
 const detalles = columnasDetalles;
 const expandedRow = ref<number | null>(null);
@@ -19,6 +21,13 @@ const columnasVisibles = ref([
   'fpago',
   'login',
 ]);
+
+const pagination = ref({
+  sortBy: 'desc',
+  descending: false,
+  page: 1,
+  rowsPerPage: 0,
+});
 
 // Methods
 const toggleExpand = (rowId: number) => {
@@ -113,6 +122,9 @@ const parseDetalle = (detalle: string): ItemDetalle[] => {
               :rows="parseDetalle(props.row.detalle)"
               row-key="codigo"
               :columns="detalles"
+              :grid="$q.screen.lt.md"
+              v-model:pagination="pagination"
+              hide-pagination
             />
           </q-td>
         </q-tr>

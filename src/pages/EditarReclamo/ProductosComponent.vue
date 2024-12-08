@@ -52,25 +52,30 @@ const pagination = {
   <div class="q-pa-none">
     <q-dialog v-model="mostrarAuditoria">
       <q-card class="my-card">
-        <q-card-section class="row items-center">
-          <div class="column">
-            <div class="row">
-              <div class="text-h6 text-primary">AUDITORÍA</div>
-              <q-space />
-              <q-btn
-                dense
-                round
-                flat
-                icon="close"
-                @click="mostrarAuditoria = false"
-              />
-            </div>
+        <q-toolbar>
+          <q-toolbar-title
+            ><span class="text-h6 text-primary">AUDITORÍA</span>
+          </q-toolbar-title>
+
+          <q-btn flat round dense icon="close" v-close-popup />
+        </q-toolbar>
+        <q-card-section class="row items-center q-pt-xs">
+          <div class="gt-xs">
+            <strong class="text-weight-bold text-primary">RUC: </strong>
+            {{ ruc }}
+            <strong class="text-weight-bold text-primary q-ml-md"
+              >Factura:
+            </strong>
+            {{ factura }}
+          </div>
+
+          <div class="column xs">
             <div>
               <strong class="text-weight-bold text-primary">RUC: </strong>
               {{ ruc }}
-              <strong class="text-weight-bold text-primary q-ml-md"
-                >Factura:
-              </strong>
+            </div>
+            <div>
+              <strong class="text-weight-bold text-primary">Factura: </strong>
               {{ factura }}
             </div>
           </div>
