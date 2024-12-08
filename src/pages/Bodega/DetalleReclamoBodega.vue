@@ -70,7 +70,6 @@ const handleButton = (mail: string, id: number) => {
 };
 
 const mostrarAuditoria = async (trimmedRuc: string, trimmedFactura: string) => {
-  audit.value = !audit.value;
   const formulario = {
     ruc_reclamante: trimmedRuc,
     no_factura: formatearFactura(trimmedFactura),
@@ -79,6 +78,7 @@ const mostrarAuditoria = async (trimmedRuc: string, trimmedFactura: string) => {
   const audi = await get('/reclamo/obtener_auditoria', formulario);
 
   auditoria.value = audi.objetos;
+  audit.value = !audit.value;
 };
 
 watch(page, () => {
