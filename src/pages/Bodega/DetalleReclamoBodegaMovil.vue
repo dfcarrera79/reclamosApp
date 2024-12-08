@@ -1,23 +1,29 @@
 <script setup lang="ts">
+import {
+  Filas,
+  Objetos,
+  Archivo,
+  RespuestaBodega,
+  AuditoriaObject,
+  RespuestaArchivo,
+} from '../../components/models';
+import {
+  columnasDetalleReclamoMovil,
+  columnasVisiblesMovil,
+} from '../../services/useColumnas';
 import DialogoEstado from './DialogoEstado.vue';
 import DialogoMotivo from './DialogoMotivo.vue';
 import { useAxios } from '../../services/useAxios';
 import { computed, nextTick, ref, watch } from 'vue';
 import { useAppStore } from '../../stores/useAppStore';
+import { useMensajes } from '../../services/useMensajes';
 import { procesarObjetos } from '../../services/useUtils';
 import { useBodegaStore } from '../../stores/useBodegaStore';
 import ArchivoDialog from '../../components/ArchivoDialog.vue';
-import {
-  columnasDetalleReclamoMovil,
-  columnasVisiblesMovil,
-} from '../../services/useColumnas';
-import {
-  Archivo,
-  Filas,
-  RespuestaArchivo,
-  RespuestaBodega,
-  Objetos,
-} from '../../components/models';
+import TablaAuditoria from '../../components/TablaAuditoria.vue';
+
+const audit = ref(false);
+const { formatearFactura } = useMensajes();
 
 /* Defined props */
 const props = defineProps<{
@@ -54,12 +60,26 @@ const newFilas = ref<Filas[]>([]);
 const pagination = { rowsPerPage: 0 };
 const visibleColumns = ref<string[]>([]);
 const replacedPath = ref('');
+const auditoria = ref<AuditoriaObject[]>([]);
 const columnas = columnasDetalleReclamoMovil;
 
 // Methods
 const handleButton = (mail: string, id: number) => {
   appStore.dialogo.email = mail;
   appStore.dialogo.id = id;
+};
+
+const mostrarAuditoria = async (trimmedRuc: string, trimmedFactura: string) => {
+  audit.value = !audit.value;
+  const formulario = {
+    ruc_reclamante: trimmedRuc,
+    no_factura: formatearFactura(trimmedFactura),
+  };
+
+  const audi = await get('/reclamo/obtener_auditoria', formulario);
+
+  auditoria.value = audi.objetos;
+  console.log('[AUDITORIA]: ', JSON.stringify(auditoria.value));
 };
 
 watch(page, () => {
@@ -301,40 +321,101 @@ const renovarMotivo = async () => {
                 <q-tooltip>Cerrar</q-tooltip>
               </q-btn>
             </q-bar>
+
+            <q-dialog v-model="audit">
+              <q-card class="my-card">
+                <q-toolbar>
+                  <q-toolbar-title
+                    ><span class="text-h6 text-primary">AUDITORÍA</span>
+                  </q-toolbar-title>
+
+                  <q-btn flat round dense icon="close" v-close-popup />
+                </q-toolbar>
+                <q-card-section class="row items-center q-pt-xs">
+                  <div class="gt-xs">
+                    <strong class="text-weight-bold text-primary">RUC: </strong>
+                    {{ props.row.ruc }}
+                    <strong class="text-weight-bold text-primary q-ml-md"
+                      >Factura:
+                    </strong>
+                    {{ props.row.nro_factura }}
+                  </div>
+
+                  <div class="column xs">
+                    <div>
+                      <strong class="text-weight-bold text-primary"
+                        >RUC:
+                      </strong>
+                      {{ props.row.ruc }}
+                    </div>
+                    <div>
+                      <strong class="text-weight-bold text-primary"
+                        >Factura:
+                      </strong>
+                      {{ props.row.nro_factura }}
+                    </div>
+                  </div>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                  <TablaAuditoria v-model:auditoria="auditoria" />
+                </q-card-section>
+              </q-card>
+            </q-dialog>
+
             <q-card-section class="q-pa-xs">
-              <q-select
-                v-show="estado !== 'FIN'"
-                outlined
-                dense
-                options-dense
-                v-model="seleccion"
-                :options="estadosFiltrados"
-                label="Cambiar estado"
-                emit-value
-                map-options
-                style="max-width: 250px"
-              >
-                <template v-slot:option="{ itemProps, opt, toggleOption }">
-                  <q-item v-bind="itemProps">
-                    <q-item-section>
-                      <q-item-label> {{ opt.label }} </q-item-label>
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-toggle
-                        :model-value="appStore.select"
-                        checked-icon="check"
-                        @update:model-value="
-                          toggleOption(opt),
-                            opt.value === 'FIN' || opt.value === 'PRO'
-                              ? (appStore.confirmarFinalizado = true)
-                              : (appStore.confirmarFinalizado = false),
-                            (appStore.dialogo.estado = opt.value)
-                        "
-                      />
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
+              <div class="column">
+                <q-select
+                  v-show="estado !== 'FIN'"
+                  outlined
+                  dense
+                  options-dense
+                  v-model="seleccion"
+                  :options="estadosFiltrados"
+                  label="Cambiar estado"
+                  emit-value
+                  map-options
+                  style="max-width: 250px"
+                >
+                  <template v-slot:option="{ itemProps, opt, toggleOption }">
+                    <q-item v-bind="itemProps">
+                      <q-item-section>
+                        <q-item-label> {{ opt.label }} </q-item-label>
+                      </q-item-section>
+                      <q-item-section side>
+                        <q-toggle
+                          :model-value="appStore.select"
+                          checked-icon="check"
+                          @update:model-value="
+                            toggleOption(opt),
+                              opt.value === 'FIN' || opt.value === 'PRO'
+                                ? (appStore.confirmarFinalizado = true)
+                                : (appStore.confirmarFinalizado = false),
+                              (appStore.dialogo.estado = opt.value)
+                          "
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+                <q-btn
+                  class="q-ml-none q-mt-sm"
+                  outline
+                  color="primary"
+                  no-caps
+                  dense
+                  @click="
+                    mostrarAuditoria(props.row.ruc, props.row.nro_factura)
+                  "
+                  v-show="appStore.appCodigo === appStore.APP_USUARIO"
+                >
+                  <div class="row items-center no-wrap q-pa-none">
+                    <div class="text-center text-caption">
+                      <strong>Auditoria</strong>
+                    </div>
+                  </div>
+                </q-btn>
+              </div>
 
               <div class="q-mt-sm">
                 <p class="q-mb-sm">
@@ -447,4 +528,10 @@ const renovarMotivo = async () => {
 
 <style scoped lang="scss">
 @import '../../css/sticky.header.table.mobile.scss';
+
+.my-card {
+  width: 100%;
+  max-width: 1100px; // Puedes ajustar este tamaño según lo que necesites
+  margin: auto;
+}
 </style>
