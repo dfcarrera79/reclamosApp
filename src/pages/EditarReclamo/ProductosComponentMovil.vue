@@ -120,21 +120,6 @@ const pagination = {
           >
             PRODUCTOS EN FACTURA
           </p>
-          <!-- <q-btn
-            class="q-mb-md q-ml-md"
-            outline
-            color="primary"
-            no-caps
-            dense
-            @click="mostrarAuditoria = !mostrarAuditoria"
-            v-show="appStore.appCodigo === appStore.APP_USUARIO"
-          >
-            <div class="row items-center no-wrap q-pa-none">
-              <div class="text-center text-caption">
-                <strong>Auditoria</strong>
-              </div>
-            </div>
-          </q-btn> -->
           <div class="justify-end column">
             <q-input
               style="align-right"
