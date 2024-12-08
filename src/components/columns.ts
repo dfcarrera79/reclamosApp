@@ -11,12 +11,12 @@ export const columnasAuditoria: QTableProps['columns'] = [
   {
     name: 'doc_acro',
     align: 'left',
-    label: 'TIPO',
+    label: 'Tipo',
     field: 'doc_acro',
   },
   {
     name: 'compro',
-    label: 'COMPROBANTE',
+    label: 'Comprobante',
     align: 'left',
     field: 'compro',
     sortable: true,
@@ -31,7 +31,7 @@ export const columnasAuditoria: QTableProps['columns'] = [
   {
     name: 'fecreg',
     align: 'left',
-    label: 'FECHA',
+    label: 'Fecha Transacción',
     field: 'fecreg',
     format: (val: string) => moment(val).format('DD-MM-YYYY HH:mm'),
     sortable: true,
@@ -72,16 +72,9 @@ export const columnasAuditoria: QTableProps['columns'] = [
     sortable: true,
   },
   {
-    name: 'login',
-    align: 'left',
-    label: 'Usuario',
-    field: 'login',
-    sortable: true,
-  },
-  {
     name: 'fecha',
     align: 'left',
-    label: 'FECHA',
+    label: 'Registro',
     field: 'fecha',
     format: (val: string) => moment(val).format('DD-MM-YYYY HH:mm'),
     sortable: true,
@@ -89,8 +82,15 @@ export const columnasAuditoria: QTableProps['columns'] = [
   {
     name: 'concepto',
     align: 'left',
-    label: 'Concepto',
+    label: 'Motivo',
     field: 'concepto',
+    sortable: true,
+  },
+  {
+    name: 'login',
+    align: 'left',
+    label: 'Usuario',
+    field: 'login',
     sortable: true,
   },
   {
@@ -113,5 +113,34 @@ export const columnasAuditoria: QTableProps['columns'] = [
     label: 'Identicador',
     field: 'identicador',
     sortable: true,
+  },
+];
+
+export const columnasDetalles: QTableProps['columns'] = [
+  {
+    name: 'codigo',
+    label: 'Cod. Barras',
+    align: 'left',
+    field: 'codigo',
+  },
+  {
+    name: 'descripcion',
+    label: 'Descripción',
+    align: 'left',
+    field: 'descripcion',
+  },
+  {
+    name: 'cantidad',
+    label: 'Cantidad',
+    align: 'right',
+    field: 'cantidad',
+    format: (val) => val.toFixed(2),
+  },
+  {
+    name: 'subtotal',
+    label: 'Subtotal',
+    align: 'right',
+    field: 'subtotal',
+    format: (val) => val.toFixed(2),
   },
 ];

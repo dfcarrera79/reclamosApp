@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useAppStore } from '../../stores/useAppStore';
+import TablaAuditoria from '../../components/TablaAuditoria.vue';
 import { columnasEditarReclamo } from '../../services/useColumnas';
 import { AuditoriaObject, Producto } from '../../components/models';
-import TablaAuditoria from '../../components/TablaAuditoria.vue';
 
 // Data
+const appStore = useAppStore();
 const mostrarAuditoria = ref(false);
-
 const filas = defineModel<Producto[]>('filas', { required: true });
 const auditoria = defineModel<AuditoriaObject[]>('auditoria', {
+  required: true,
+});
+const ruc = defineModel<string>('ruc', {
+  required: true,
+});
+const factura = defineModel<string>('factura', {
   required: true,
 });
 
@@ -43,31 +50,35 @@ const pagination = {
 
 <template>
   <div class="q-pa-none">
-    <q-dialog v-model="mostrarAuditoria" full-width>
-      <q-card class="row justify-center">
-        <q-card-section class="row items-center no-wrap">
+    <q-dialog v-model="mostrarAuditoria">
+      <q-card class="my-card">
+        <q-card-section class="row items-center">
           <div class="column">
-            <div class="text-h6 text-primary">AUDITORÍA</div>
-            <TablaAuditoria v-model:auditoria="auditoria" />
+            <div class="row">
+              <div class="text-h6 text-primary">AUDITORÍA</div>
+              <q-space />
+              <q-btn
+                dense
+                round
+                flat
+                icon="close"
+                @click="mostrarAuditoria = false"
+              />
+            </div>
+            <div>
+              <strong class="text-weight-bold text-primary">RUC: </strong>
+              {{ ruc }}
+              <strong class="text-weight-bold text-primary q-ml-md"
+                >Factura:
+              </strong>
+              {{ factura }}
+            </div>
           </div>
         </q-card-section>
-        <q-separator />
-        <q-card-section> </q-card-section>
-        <!-- <q-card-actions vertical>
-          <q-item
-            clickable
-            v-ripple
-            active-class="my-menu-link"
-            @click="eliminarEmpresa"
-          >
-            <q-item-section avatar>
-              <q-icon name="delete" color="red-5" />
-            </q-item-section>
-            <q-item-section>
-              <span class="text-subtitle1"> Eliminar Empresa </span>
-            </q-item-section>
-          </q-item>
-        </q-card-actions> -->
+
+        <q-card-section class="q-pt-none">
+          <TablaAuditoria v-model:auditoria="auditoria" />
+        </q-card-section>
       </q-card>
     </q-dialog>
 
@@ -103,6 +114,7 @@ const pagination = {
               no-caps
               dense
               @click="mostrarAuditoria = !mostrarAuditoria"
+              v-show="appStore.appCodigo === appStore.APP_USUARIO"
             >
               <div class="row items-center no-wrap q-pa-none">
                 <div class="text-center text-caption">
@@ -156,3 +168,10 @@ const pagination = {
     </q-table>
   </div>
 </template>
+<style lang="scss" scoped>
+.my-card {
+  width: 100%;
+  max-width: 1100px; // Puedes ajustar este tamaño según lo que necesites
+  margin: auto;
+}
+</style>

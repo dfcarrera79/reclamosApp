@@ -118,12 +118,9 @@ const procesarFormulario = async () => {
 
   try {
     const productos = await get('/reclamo/obtener_productos/', formulario);
-
     const audi = await get('/reclamo/obtener_auditoria', formulario);
 
     auditoria.value = audi.objetos;
-
-    console.log('[AUDITORÍA]: ', JSON.stringify(auditoria.value));
 
     if (!productos || !productos.objetos) {
       throw new Error('La respuesta del servidor no contiene productos.');
@@ -369,6 +366,8 @@ const renovarArchivo3 = (event: Detalle) => {
             v-if="filas.length > 0"
             v-model:filas="filas"
             v-model:auditoria="auditoria"
+            v-model:ruc="ruc"
+            v-model:factura="factura"
             @agregarReclamo="agregarReclamo($event)"
             @quitarFila="quitarFila($event)"
           />

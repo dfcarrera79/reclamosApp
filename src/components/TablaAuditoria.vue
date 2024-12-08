@@ -1,28 +1,70 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { AuditoriaObject } from '../components/models';
-import { columnasAuditoria } from '../components/columns';
+import { columnasAuditoria, columnasDetalles } from '../components/columns';
 
 // Data
 const columns = columnasAuditoria;
+const detalles = columnasDetalles;
 const expandedRow = ref<number | null>(null);
 const rows = defineModel<AuditoriaObject[]>('auditoria', { required: true });
 
 const columnasVisibles = ref([
   'doc_acro',
   'compro',
-  'fecreg',
   'numitems',
   'monto',
   'concepto',
   'fecha',
   'fpago',
+  'login',
 ]);
 
 // Methods
 const toggleExpand = (rowId: number) => {
   expandedRow.value = expandedRow.value === rowId ? null : rowId;
 };
+
+// Function to parse "detalle"
+interface ItemDetalle {
+  codigo: string;
+  descripcion: string;
+  cantidad: number;
+  subtotal: number;
+}
+
+const parseDetalle = (detalle: string): ItemDetalle[] => {
+  const lines = detalle.trim().split('\n');
+  const items: ItemDetalle[] = [];
+
+  for (let i = 0; i < lines.length; i += 4) {
+    items.push({
+      codigo: lines[i] || '',
+      descripcion: lines[i + 1] || '',
+      cantidad: parseFloat(lines[i + 2]?.trim() || '0'),
+      subtotal: parseFloat(lines[i + 3]?.trim() || '0'),
+    });
+  }
+
+  return items;
+};
+// const parseDetalle = (detalle: string): ItemDetalle[] => {
+//   const lines = detalle.trim().split('\n');
+//   const items: ItemDetalle[] = [];
+
+//   for (let i = 0; i < lines.length; i += 4) {
+//     if (lines[i] && lines[i + 1] && lines[i + 2] && lines[i + 3]) {
+//       items.push({
+//         codigo: lines[i].trim(),
+//         descripcion: lines[i + 1].trim(),
+//         cantidad: parseFloat(lines[i + 2].trim()),
+//         subtotal: parseFloat(lines[i + 3].trim()),
+//       });
+//     }
+//   }
+
+//   return items;
+// };
 </script>
 
 <template>
@@ -32,9 +74,10 @@ const toggleExpand = (rowId: number) => {
       bordered
       :rows="rows"
       :columns="columns"
-      row-key="name"
+      row-key="doc_codigo"
       :visible-columns="columnasVisibles"
-      hide-bottom
+      hide-pagination
+      :dense="$q.screen.lt.md"
     >
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -46,7 +89,6 @@ const toggleExpand = (rowId: number) => {
       </template>
 
       <template v-slot:body="props">
-        {{ props.row.doc_codigo }}
         <q-tr :props="props">
           <q-td auto-width>
             <q-btn
@@ -62,11 +104,16 @@ const toggleExpand = (rowId: number) => {
             {{ col.value }}
           </q-td>
         </q-tr>
-        <q-tr v-show="props.expand" :props="props">
+        <q-tr v-show="expandedRow === props.row.doc_codigo" :props="props">
           <q-td colspan="100%">
-            <div class="text-left">
-              This is expand slot for row above: {{ props.row.name }}.
-            </div>
+            <q-table
+              flat
+              bordered
+              dense
+              :rows="parseDetalle(props.row.detalle)"
+              row-key="codigo"
+              :columns="detalles"
+            />
           </q-td>
         </q-tr>
       </template>
