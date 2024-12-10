@@ -251,7 +251,7 @@ const renovarMotivo = async () => {
         </q-tr>
         <q-tr v-show="expandedRow === props.row.nro_reclamo" :props="props">
           <q-dialog v-model="audit">
-            <q-card class="my-card">
+            <q-card class="audit-card">
               <q-toolbar>
                 <q-toolbar-title
                   ><span class="text-h6 text-primary">AUDITORÍA</span>
@@ -461,9 +461,4 @@ const renovarMotivo = async () => {
 
 <style scoped lang="scss">
 @import '../../css/sticky.header.table.scss';
-.my-card {
-  width: 100%;
-  max-width: 1100px; // Puedes ajustar este tamaño según lo que necesites
-  margin: auto;
-}
 </style>

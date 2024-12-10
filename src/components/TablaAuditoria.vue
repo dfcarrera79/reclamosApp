@@ -124,7 +124,6 @@ const parseDetalle = (detalle: string): ItemDetalle[] => {
               :columns="detalles"
               :grid="$q.screen.lt.md"
               v-model:pagination="pagination"
-              hide-pagination
             />
           </q-td>
         </q-tr>

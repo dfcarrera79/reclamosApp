@@ -35,6 +35,12 @@
   max-width: 350px;
 }
 
+.audit-card {
+  width: 100%;
+  max-width: 1100px; // Puedes ajustar este tamaño según lo que necesites
+  margin: auto;
+}
+
 p {
   word-break: break-all;
   white-space: normal;
