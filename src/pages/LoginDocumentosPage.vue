@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAxios } from '../services/useAxios';
-import { funcionIrDocumentos } from '../services/useUtils';
+// import { funcionIrDocumentos } from '../services/useUtils';
 import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '../stores/useAppStore';
 import { useMensajes } from '../services/useMensajes';
@@ -270,7 +270,7 @@ const handleCerrar = () => {
         </div>
       </div>
 
-      <div class="row q-pl-sm q-pt-sm justify-center">
+      <!-- <div class="row q-pl-sm q-pt-sm justify-center">
         <q-btn
           outline
           rounded
@@ -279,7 +279,7 @@ const handleCerrar = () => {
           size="sm"
           @click="funcionIrDocumentos"
         />
-      </div>
+      </div> -->
 
       <div class="row">
         <div

@@ -67,7 +67,7 @@ const renovarArchivo3 = (event: Detalle) => {
           class="text-primary text-subtitle1 q-ma-none"
           style="font-family: 'Bebas Neue'"
         >
-          PRODUCTOS EN RECLAMOS
+          PRODUCTOS EN RECLAMO
         </p>
         <q-space />
         <q-btn

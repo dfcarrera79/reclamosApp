@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useAxios } from '../services/useAxios';
-// import { funcionIrReclamos } from '../services/useUtils';
 import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '../stores/useAppStore';
 import { useMensajes } from '../services/useMensajes';
 import { ref, onMounted, computed, watch } from 'vue';
+// import { funcionIrReclamos } from '../services/useUtils';
 import { SessionData, Opcion } from '../components/models';
 import { useQuasar, QSpinnerFacebook, LocalStorage } from 'quasar';
 
@@ -55,11 +55,11 @@ const labelText = computed(() => {
 onMounted(async () => {
   appStore.appCodigo = 2;
 
-  // const apiUrl =
-  //   process.env.API_URL ||
-  //   'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
+  const apiUrl =
+    process.env.API_URL ||
+    'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
 
-  const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
+  // const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
 
   appStore.setUrlApi(apiUrl);
 
