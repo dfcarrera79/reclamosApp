@@ -86,6 +86,7 @@ const parseDetalle = (detalle: string): ItemDetalle[] => {
       row-key="doc_codigo"
       :visible-columns="columnasVisibles"
       hide-pagination
+      v-model:pagination="pagination"
       :dense="$q.screen.lt.md"
     >
       <template v-slot:header="props">
