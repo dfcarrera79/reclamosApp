@@ -337,6 +337,8 @@ const renovarArchivo3 = (event: Detalle) => {
       INGRESAR RECLAMO
     </h4>
 
+    <!-- {{ detalles }} -->
+
     <FormComponent
       v-model:ruc="ruc"
       v-model:factura="factura"

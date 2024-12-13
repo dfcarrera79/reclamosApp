@@ -383,21 +383,26 @@ const renovarMotivo = async () => {
                     <p class="q-mb-none text-h7">
                       {{ reclamo.producto.nombre }}
                     </p>
-                    <q-btn
-                      size="xs"
-                      color="primary"
-                      round
-                      dense
-                      icon="edit"
-                      @click="
-                        handleEditarMotivo(
-                          reclamo.producto.id,
-                          props.row.nro_reclamo
-                        )
-                      "
-                    >
-                      <q-tooltip>Editar el motivo</q-tooltip>
-                    </q-btn>
+                    <div class="row justify-between">
+                      <div>Cantidad: {{ reclamo.producto.cantidad }}</div>
+                      <div>
+                        <q-btn
+                          size="xs"
+                          color="primary"
+                          round
+                          dense
+                          icon="edit"
+                          @click="
+                            handleEditarMotivo(
+                              reclamo.producto.id,
+                              props.row.nro_reclamo
+                            )
+                          "
+                        >
+                          <q-tooltip>Editar el motivo</q-tooltip>
+                        </q-btn>
+                      </div>
+                    </div>
                   </q-card-section>
 
                   <q-separator inset />
