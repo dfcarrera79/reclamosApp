@@ -19,6 +19,22 @@ const factura = defineModel<string>('factura', {
   required: true,
 });
 
+let objetoAuditoria = {
+  id: 10000,
+  nombre: 'Reclamo por auditoria',
+  cantidad: 0,
+  otra_info: [
+    {
+      cantidad_x_uni: 0,
+      cantidad: 0,
+      lote: '',
+      fecha_vencimiento: '',
+      r_sanitario: '',
+      fecha_corta: false,
+    },
+  ],
+};
+
 const columnas = columnasEditarReclamo;
 
 /* defined emits*/
@@ -79,6 +95,22 @@ const pagination = {
               {{ factura }}
             </div>
           </div>
+
+          <!-- <q-btn
+            class="q-ml-md"
+            outline
+            color="primary"
+            no-caps
+            dense
+            @click="enviarReclamo(objetoAuditoria)"
+            v-show="appStore.appCodigo === appStore.APP_USUARIO"
+          >
+            <div class="row items-center no-wrap q-pa-none">
+              <div class="text-center text-caption">
+                <strong>Agregar a reclamo</strong>
+              </div>
+            </div>
+          </q-btn> -->
         </q-card-section>
 
         <q-card-section class="q-pt-none">

@@ -297,6 +297,17 @@ export interface RespuestaReporte {
   objetos: Reporte[];
 }
 
+export interface ReportePorVendedor {
+  vendedor: string;
+  reclamos: Reporte[];
+}
+
+export interface RespuestaReporteVendedores {
+  error: string;
+  mensaje: string;
+  objetos: ReportePorVendedor[];
+}
+
 export interface Opcion {
   label: string;
   valor: number;

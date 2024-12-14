@@ -48,6 +48,9 @@ const fotos = ref<Archivo[]>([]);
 const newFilas = ref<Filas[]>([]);
 const visibleColumns = ref<string[]>([]);
 
+const ruc = ref('');
+const factura = ref('');
+
 const expandedRow = ref<number | null>(null);
 
 const pagination = ref({
@@ -60,8 +63,10 @@ const pagination = ref({
 const columnas = columnasDetalleReclamo;
 
 // Methods
-const toggleExpand = (rowId: number) => {
+const toggleExpand = (rowId: number, rowRUC: string, rowFact: string) => {
   expandedRow.value = expandedRow.value === rowId ? null : rowId;
+  ruc.value = rowRUC;
+  factura.value = rowFact;
 };
 
 const handleButton = (mail: string, id: number) => {
@@ -171,6 +176,42 @@ const renovarMotivo = async () => {
     @renovarMotivo="renovarMotivo"
   />
   <div>
+    <q-dialog v-model="audit">
+      <q-card class="audit-card">
+        <q-toolbar>
+          <q-toolbar-title
+            ><span class="text-h6 text-primary">AUDITORÍA</span>
+          </q-toolbar-title>
+
+          <q-btn flat round dense icon="close" v-close-popup />
+        </q-toolbar>
+        <q-card-section class="row items-center q-pt-xs">
+          <div class="gt-xs">
+            <strong class="text-weight-bold text-primary">RUC: </strong>
+            {{ ruc }}
+            <strong class="text-weight-bold text-primary q-ml-md"
+              >Factura:
+            </strong>
+            {{ factura }}
+          </div>
+
+          <div class="column xs">
+            <div>
+              <strong class="text-weight-bold text-primary">RUC: </strong>
+              {{ ruc }}
+            </div>
+            <div>
+              <strong class="text-weight-bold text-primary">Factura: </strong>
+              {{ factura }}
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <TablaAuditoria v-model:auditoria="auditoria" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
     <q-table
       flat
       bordered
@@ -205,7 +246,11 @@ const renovarMotivo = async () => {
               round
               dense
               @click="
-                toggleExpand(props.row.nro_reclamo);
+                toggleExpand(
+                  props.row.nro_reclamo,
+                  props.row.ruc,
+                  props.row.nro_factura
+                );
                 handleButton(props.row.email, props.row.nro_reclamo);
               "
               :icon="props.expand ? 'remove' : 'add'"
@@ -250,44 +295,6 @@ const renovarMotivo = async () => {
           </q-td>
         </q-tr>
         <q-tr v-show="expandedRow === props.row.nro_reclamo" :props="props">
-          <q-dialog v-model="audit">
-            <q-card class="audit-card">
-              <q-toolbar>
-                <q-toolbar-title
-                  ><span class="text-h6 text-primary">AUDITORÍA</span>
-                </q-toolbar-title>
-
-                <q-btn flat round dense icon="close" v-close-popup />
-              </q-toolbar>
-              <q-card-section class="row items-center q-pt-xs">
-                <div class="gt-xs">
-                  <strong class="text-weight-bold text-primary">RUC: </strong>
-                  {{ props.row.ruc }}
-                  <strong class="text-weight-bold text-primary q-ml-md"
-                    >Factura:
-                  </strong>
-                  {{ props.row.nro_factura }}
-                </div>
-
-                <div class="column xs">
-                  <div>
-                    <strong class="text-weight-bold text-primary">RUC: </strong>
-                    {{ props.row.ruc }}
-                  </div>
-                  <div>
-                    <strong class="text-weight-bold text-primary"
-                      >Factura:
-                    </strong>
-                    {{ props.row.nro_factura }}
-                  </div>
-                </div>
-              </q-card-section>
-
-              <q-card-section class="q-pt-none">
-                <TablaAuditoria v-model:auditoria="auditoria" />
-              </q-card-section>
-            </q-card>
-          </q-dialog>
           <q-td colspan="100%">
             <div class="column">
               <q-select

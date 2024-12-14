@@ -86,6 +86,7 @@ const procesarImagen3 = async (img: File) => {
 };
 
 const eliminarReclamo = (id: number) => {
+  console.log('[ID]: ', id);
   emit('eliminarReclamo', id);
 };
 

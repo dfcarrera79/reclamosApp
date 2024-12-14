@@ -4,7 +4,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '../stores/useAppStore';
 import { useMensajes } from '../services/useMensajes';
 import { ref, onMounted, computed, watch } from 'vue';
-// import { funcionIrReclamos } from '../services/useUtils';
+import { funcionIrReclamos } from '../services/useUtils';
 import { SessionData, Opcion } from '../components/models';
 import { useQuasar, QSpinnerFacebook, LocalStorage } from 'quasar';
 
@@ -55,11 +55,11 @@ const labelText = computed(() => {
 onMounted(async () => {
   appStore.appCodigo = 2;
 
-  const apiUrl =
-    process.env.API_URL ||
-    'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
+  // const apiUrl =
+  //   process.env.API_URL ||
+  //   'https://apromedfarmaloja-cloud.com:3010/v1/reclamos';
 
-  // const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
+  const apiUrl = process.env.API_URL || 'http://192.168.1.50:3009/v1/reclamos';
 
   appStore.setUrlApi(apiUrl);
 
@@ -271,7 +271,7 @@ const handleCerrar = () => {
         </div>
       </div>
 
-      <!-- <div class="row q-pl-sm q-pt-sm justify-center">
+      <div class="row q-pl-sm q-pt-sm justify-center">
         <q-btn
           outline
           rounded
@@ -280,7 +280,7 @@ const handleCerrar = () => {
           size="sm"
           @click="funcionIrReclamos"
         />
-      </div> -->
+      </div>
 
       <div class="row">
         <div

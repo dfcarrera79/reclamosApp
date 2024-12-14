@@ -227,6 +227,17 @@ const procesarEnvio = () => {
 };
 
 const agregarReclamo = async (event: Producto) => {
+  console.log('[EVENT]: ', JSON.stringify(event));
+
+  const existeProducto = detalles.value.some(
+    (detalle) => detalle.producto.id === 10000
+  );
+
+  if (existeProducto) {
+    mostrarError('Ya se ha ingresado un reclamo por auditoria', 'center');
+    return;
+  }
+
   let producto = await verificarProductoEnReclamo(event.id);
 
   if (producto.id_reclamo != 0) {
