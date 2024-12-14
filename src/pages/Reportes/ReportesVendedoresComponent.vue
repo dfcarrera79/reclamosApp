@@ -39,16 +39,7 @@ const procesarFormulario = async () => {
   );
 
   reportes.value = respuestaVendedores.objetos;
-
-  console.log(
-    '[REPORTES POR VENDEDORES]: ',
-    JSON.stringify(respuestaVendedores)
-  );
 };
-
-// const sumarCount = (array: Reporte[]) => {
-//   return array.reduce((suma, item) => suma + item.count, 0);
-// };
 
 const sumarCount = (reclamos: { count: number }[]) => {
   return reclamos.reduce((suma, reclamo) => suma + reclamo.count, 0);

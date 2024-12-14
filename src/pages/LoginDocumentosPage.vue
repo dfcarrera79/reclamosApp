@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useAxios } from '../services/useAxios';
-import { funcionIrDocumentos } from '../services/useUtils';
 import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '../stores/useAppStore';
 import { useMensajes } from '../services/useMensajes';
 import { ref, onMounted, computed, watch } from 'vue';
+import { funcionIrDocumentos } from '../services/useUtils';
 import { SessionData, Opcion } from '../components/models';
 import { useQuasar, QSpinnerFacebook, LocalStorage } from 'quasar';
 

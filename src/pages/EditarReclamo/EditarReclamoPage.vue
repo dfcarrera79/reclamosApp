@@ -227,7 +227,7 @@ const procesarEnvio = () => {
 };
 
 const agregarReclamo = async (event: Producto) => {
-  console.log('[EVENT]: ', JSON.stringify(event));
+  // console.log('[EVENT]: ', JSON.stringify(event));
 
   const existeProducto = detalles.value.some(
     (detalle) => detalle.producto.id === 10000
