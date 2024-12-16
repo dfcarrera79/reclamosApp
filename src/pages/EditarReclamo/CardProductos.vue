@@ -29,6 +29,7 @@ const insertarFila = (event: number) => {
 };
 
 const quitarReclamo = (event: number) => {
+  console.log('[EVENT quitarReclamo CardProductos]: ', JSON.stringify(event));
   emits('quitarReclamo', event);
 };
 

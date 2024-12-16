@@ -110,6 +110,7 @@ export interface Item {
   art_codbar: string;
   art_nomlar: string;
   dt_cant: number;
+  dt_monto: number;
   dt_lote: string;
   dt_fecha: string;
   conteo_pedido: string;

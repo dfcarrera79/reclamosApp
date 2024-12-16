@@ -227,7 +227,7 @@ const procesarEnvio = () => {
 };
 
 const agregarReclamo = async (event: Producto) => {
-  // console.log('[EVENT]: ', JSON.stringify(event));
+  console.log('[EVENT agregarReclamo EditarReclamo]: ', JSON.stringify(event));
 
   const existeProducto = detalles.value.some(
     (detalle) => detalle.producto.id === 10000
@@ -288,7 +288,9 @@ const quitarFila = async (event: Producto) => {
 };
 
 const quitarReclamo = (event: number) => {
+  console.log('[EVENT quitarReclamo EditarReclamo]: ', JSON.stringify(event));
   detalles.value = detalles.value.filter((el) => el.producto.id !== event);
+  console.log('[DETALLES]: ', JSON.stringify(detalles.value));
 };
 
 const renovarComentario = (event: Detalle) => {
@@ -348,7 +350,7 @@ const renovarArchivo3 = (event: Detalle) => {
       INGRESAR RECLAMO
     </h4>
 
-    <!-- {{ detalles }} -->
+    {{ detalles }}
 
     <FormComponent
       v-model:ruc="ruc"

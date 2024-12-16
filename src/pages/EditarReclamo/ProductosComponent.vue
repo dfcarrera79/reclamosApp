@@ -28,7 +28,7 @@ let objetoAuditoria = {
       cantidad_x_uni: 0,
       cantidad: 0,
       lote: '',
-      fecha_vencimiento: '',
+      fecha_vencimiento: '2100/12/31',
       r_sanitario: '',
       fecha_corta: false,
     },
@@ -96,7 +96,7 @@ const pagination = {
             </div>
           </div>
 
-          <!-- <q-btn
+          <q-btn
             class="q-ml-md"
             outline
             color="primary"
@@ -110,7 +110,7 @@ const pagination = {
                 <strong>Agregar a reclamo</strong>
               </div>
             </div>
-          </q-btn> -->
+          </q-btn>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
