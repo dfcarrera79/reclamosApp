@@ -393,6 +393,9 @@ const renovarMotivo = async () => {
                     <div class="row justify-between">
                       <div>Cantidad: {{ reclamo.producto.cantidad }}</div>
                       <div>
+                        Subtotal: {{ reclamo.producto.otra_info[0].subtotal }}
+                      </div>
+                      <div>
                         <q-btn
                           size="xs"
                           color="primary"

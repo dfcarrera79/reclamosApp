@@ -479,6 +479,16 @@ const renovarMotivo = async () => {
                 <p class="q-pt-xs">
                   {{ reclamo.producto.nombre }}
                 </p>
+                <div class="row justify-between">
+                  <p>
+                    <strong>Cantidad:</strong> {{ reclamo.producto.cantidad }}
+                  </p>
+                  <p>
+                    <strong>Subtotal:</strong>
+                    {{ reclamo.producto.otra_info[0].subtotal }}
+                  </p>
+                </div>
+
                 <p>
                   <strong>Motivo:</strong> {{ reclamo.motivo.nombre_motivo }}
                 </p>

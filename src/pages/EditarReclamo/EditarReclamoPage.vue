@@ -126,8 +126,11 @@ const procesarFormulario = async () => {
       throw new Error('La respuesta del servidor no contiene productos.');
     }
 
+    console.log('[PRODUCTOS]: ', JSON.stringify(productos.objetos));
+
     filasOriginales.value = productos.objetos.map((item: Item) => {
       let otra_info = item.conteo_pedido ? item.conteo_pedido : '';
+      console.log('[OTRA INFO]: ', JSON.stringify(otra_info));
       if (otra_info.trim().length === 0) {
         otra_info = JSON.stringify([
           {
@@ -139,6 +142,23 @@ const procesarFormulario = async () => {
             r_sanitario: '',
           },
         ]);
+      } else {
+        // Si ya existe otra_info, asegúrate de agregar o reemplazar el subtotal al parsearlo
+        interface Otra_Info {
+          cantidad: number;
+          subtotal: number;
+          cantidad_x_uni: number;
+          fecha_corta: boolean;
+          fecha_vencimiento: string;
+          lote: string;
+          r_sanitario: string;
+        }
+
+        const parsedInfo = JSON.parse(otra_info);
+        parsedInfo.forEach((info: Otra_Info) => {
+          info.subtotal = item.dt_monto;
+        });
+        otra_info = JSON.stringify(parsedInfo);
       }
       return {
         id: item.art_codigo,
@@ -147,6 +167,7 @@ const procesarFormulario = async () => {
         otra_info: JSON.parse(otra_info),
       };
     });
+    console.log('[FILAS ORIGINALES]: ', JSON.stringify(filas.value));
     originalRows = filasOriginales.value;
   } catch (error) {
     mostrarError(
