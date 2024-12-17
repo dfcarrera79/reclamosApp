@@ -65,7 +65,7 @@ onMounted(() => {
     >
       <div
         :class="$q.screen.lt.md ? 'q-pa-xs q-ma-none' : 'q-ma-sm'"
-        style="width: 90px"
+        style="width: 120px"
       >
         <q-select
           dense
@@ -105,26 +105,7 @@ onMounted(() => {
       </div>
     </q-form>
 
-    <!-- <div class="q-pa-md">
-      <div v-for="(item, index) in reportes" :key="index" class="q-mt-sm">
-        <q-linear-progress
-          size="30px"
-          :value="item.count / sumarCount(reportes)"
-          color="secondary"
-        >
-          <div class="absolute-full flex flex-center">
-            <q-badge
-              color="white"
-              text-color="primary"
-              :label="item.nombre_motivo + ' (' + item.count + ')'"
-            />
-          </div>
-        </q-linear-progress>
-      </div>
-    </div> -->
-
     <div class="q-pa-md">
-      <!-- Iterar sobre cada vendedor -->
       <div v-for="(vendedor, index) in reportes" :key="index" class="q-mb-lg">
         <h5 class="q-mb-sm">{{ vendedor.vendedor }}</h5>
         <div

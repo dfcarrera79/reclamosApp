@@ -58,7 +58,7 @@ onMounted(() => {
     >
       <div
         :class="$q.screen.lt.md ? 'q-pa-xs q-ma-none' : 'q-ma-sm'"
-        style="width: 90px"
+        style="width: 120px"
       >
         <q-select
           dense
