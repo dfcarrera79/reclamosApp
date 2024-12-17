@@ -485,7 +485,11 @@ const renovarMotivo = async () => {
                   </p>
                   <p>
                     <strong>Subtotal:</strong>
-                    {{ reclamo.producto.otra_info[0].subtotal }}
+                    {{
+                      parseFloat(
+                        reclamo.producto.otra_info[0]?.subtotal || '0'
+                      ).toFixed(2)
+                    }}
                   </p>
                 </div>
 
