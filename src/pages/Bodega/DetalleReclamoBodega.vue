@@ -6,11 +6,17 @@ import {
   AuditoriaObject,
   RespuestaBodega,
   RespuestaArchivo,
+  FechasReclamo,
+  RespuestaFechas,
+  Responsables,
+  Respuesta,
 } from '../../components/models';
 import {
   columnasVisibles,
   columnasDetalleReclamo,
 } from '../../services/useColumnas';
+import moment from 'moment';
+import { useQuasar } from 'quasar';
 import { computed, ref, watch } from 'vue';
 import DialogoEstado from './DialogoEstado.vue';
 import DialogoMotivo from './DialogoMotivo.vue';
@@ -37,7 +43,8 @@ const idProducto = ref(0);
 const numReclamo = ref(0);
 const reclamos = ref([]);
 const seleccion = ref('');
-const { get } = useAxios();
+const $q = useQuasar();
+const { get, put } = useAxios();
 const audit = ref(false);
 const { formatearFactura } = useMensajes();
 const appStore = useAppStore();
@@ -47,6 +54,17 @@ const filas = ref<Filas[]>([]);
 const fotos = ref<Archivo[]>([]);
 const newFilas = ref<Filas[]>([]);
 const visibleColumns = ref<string[]>([]);
+const fechasEnReclamo = ref<FechasReclamo>({
+  fecha_factura: '',
+  fecha_reclamo: '',
+  reclamo_fuera_de_tiempo: false,
+});
+const responsable = ref<Responsables>({
+  doc_codigo: 0,
+  usu_nomape: '',
+});
+const responsables = ref<Responsables[]>([]);
+const responsabilidad = ref(false);
 
 const ruc = ref('');
 const factura = ref('');
@@ -63,10 +81,26 @@ const pagination = ref({
 const columnas = columnasDetalleReclamo;
 
 // Methods
-const toggleExpand = (rowId: number, rowRUC: string, rowFact: string) => {
+const toggleExpand = async (rowId: number, rowRUC: string, rowFact: string) => {
+  responsables.value = [];
+  responsable.value = {
+    doc_codigo: 0,
+    usu_nomape: '',
+  };
+  responsabilidad.value = false;
   expandedRow.value = expandedRow.value === rowId ? null : rowId;
   ruc.value = rowRUC;
   factura.value = rowFact;
+  const response: RespuestaFechas = await get(
+    '/reclamo/reclamo_fuera_de_tiempo/',
+    {
+      id: rowId,
+    }
+  );
+
+  fechasEnReclamo.value = response.objetos[0];
+
+  await mostrarLoginsAuditoria(rowRUC, rowFact);
 };
 
 const handleButton = (mail: string, id: number) => {
@@ -84,6 +118,55 @@ const mostrarAuditoria = async (trimmedRuc: string, trimmedFactura: string) => {
 
   auditoria.value = audi.objetos;
   audit.value = !audit.value;
+};
+
+const mostrarLoginsAuditoria = async (
+  trimmedRuc: string,
+  trimmedFactura: string
+) => {
+  const formulario = {
+    ruc_reclamante: trimmedRuc,
+    no_factura: formatearFactura(trimmedFactura),
+  };
+
+  const audiLogins = await get('/reclamo/obtener_logins_auditoria', formulario);
+
+  if (audiLogins.error === 'N') {
+    responsabilidad.value = true;
+  }
+
+  responsables.value = audiLogins.objetos.filter(
+    (
+      (seen) => (item: Responsables) =>
+        !seen.has(item.usu_nomape) && seen.add(item.usu_nomape)
+    )(new Set<string>())
+  );
+};
+
+const deducirMensaje = (resp: Respuesta) => {
+  $q.notify({
+    color: resp.error === 'N' ? 'green-4' : 'red-5',
+    textColor: 'white',
+    icon: resp.error === 'N' ? 'cloud_done' : 'warning',
+    message: resp.mensaje,
+  });
+};
+
+const asignarResponsable = async (id: number, responsable: string) => {
+  const respuesta = await put(
+    '/reclamo/actualizar_responsable_reclamo',
+    {},
+    JSON.parse(
+      JSON.stringify({
+        id_reclamo: id,
+        responsable: responsable,
+      })
+    )
+  );
+
+  if (respuesta.error === 'N') {
+    deducirMensaje(respuesta);
+  }
 };
 
 watch(page, () => {
@@ -331,6 +414,42 @@ const renovarMotivo = async () => {
                 </template>
               </q-select>
 
+              <div class="row" v-show="estado == 'PEN'">
+                <q-select
+                  class="col-4 bg-white q-py-sm"
+                  debounce="350"
+                  label="Seleccionar causante del Reclamo"
+                  v-model="responsable"
+                  :options="responsables"
+                  option-value="doc_codigo"
+                  option-label="usu_nomape"
+                  outlined
+                  dense
+                  options-dense
+                  style="max-width: 250px"
+                  :disable="!responsabilidad"
+                />
+                <div class="q-ml-sm q-mt-sm">
+                  <q-btn
+                    round
+                    size="sm"
+                    color="primary"
+                    icon="upload"
+                    @click="
+                      asignarResponsable(
+                        props.row.nro_reclamo,
+                        responsable.usu_nomape
+                      )
+                    "
+                    :disable="responsable.usu_nomape === ''"
+                  >
+                    <q-tooltip>
+                      <span>Asignar responsabilidad</span>
+                    </q-tooltip>
+                  </q-btn>
+                </div>
+              </div>
+
               <q-btn
                 class="q-ml-none q-mt-sm"
                 outline
@@ -353,6 +472,40 @@ const renovarMotivo = async () => {
               <strong>Usuario(vendedor): </strong>
               {{ props.row.reclamos[0]['usuario'] }}
             </div>
+
+            <div class="text-left">
+              <strong>Reclamo fuera de tiempo: </strong>
+
+              <q-badge
+                rounded
+                :color="
+                  fechasEnReclamo.reclamo_fuera_de_tiempo
+                    ? 'negative'
+                    : 'positive'
+                "
+              >
+                {{ fechasEnReclamo.reclamo_fuera_de_tiempo ? 'Sí' : 'No' }}
+                <q-tooltip>
+                  <div>
+                    Fecha Factura:
+                    {{
+                      moment(fechasEnReclamo.fecha_factura).format(
+                        'DD-MM-YYYY HH:mm'
+                      )
+                    }}
+                  </div>
+                  <div>
+                    Fecha Reclamo:
+                    {{
+                      moment(fechasEnReclamo.fecha_reclamo).format(
+                        'DD-MM-YYYY HH:mm'
+                      )
+                    }}
+                  </div>
+                </q-tooltip>
+              </q-badge>
+            </div>
+
             <div class="text-left" v-show="estado !== 'PEN'">
               <strong>Encargado del reclamo: </strong>
               {{ props.row.nombre_usuario }}

@@ -331,3 +331,20 @@ export interface AuditoriaObject {
   detalle: string;
   identicador: string;
 }
+
+export interface RespuestaFechas {
+  error: string;
+  mensaje: string;
+  objetos: FechasReclamo[];
+}
+
+export interface FechasReclamo {
+  fecha_reclamo: string;
+  fecha_factura: string;
+  reclamo_fuera_de_tiempo: boolean;
+}
+
+export interface Responsables {
+  doc_codigo: number;
+  usu_nomape: string;
+}
