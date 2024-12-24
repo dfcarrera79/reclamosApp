@@ -6,8 +6,6 @@ import {
   AuditoriaObject,
   RespuestaBodega,
   RespuestaArchivo,
-  FechasReclamo,
-  RespuestaFechas,
   Responsables,
   Respuesta,
 } from '../../components/models';
@@ -15,11 +13,11 @@ import {
   columnasVisibles,
   columnasDetalleReclamo,
 } from '../../services/useColumnas';
-import moment from 'moment';
 import { useQuasar } from 'quasar';
 import { computed, ref, watch } from 'vue';
 import DialogoEstado from './DialogoEstado.vue';
 import DialogoMotivo from './DialogoMotivo.vue';
+import DialogoRetraso from './DialogoRetraso.vue';
 import { useAxios } from '../../services/useAxios';
 import MotivosPrioridad from './MotivosPrioridad.vue';
 import { useAppStore } from '../../stores/useAppStore';
@@ -54,11 +52,6 @@ const filas = ref<Filas[]>([]);
 const fotos = ref<Archivo[]>([]);
 const newFilas = ref<Filas[]>([]);
 const visibleColumns = ref<string[]>([]);
-const fechasEnReclamo = ref<FechasReclamo>({
-  fecha_factura: '',
-  fecha_reclamo: '',
-  reclamo_fuera_de_tiempo: false,
-});
 const responsable = ref<Responsables>({
   doc_codigo: 0,
   usu_nomape: '',
@@ -68,6 +61,10 @@ const responsabilidad = ref(false);
 
 const ruc = ref('');
 const factura = ref('');
+
+const editarRetraso = ref(false);
+const idReclamo = ref(0);
+const retraso = ref(false);
 
 const expandedRow = ref<number | null>(null);
 
@@ -91,15 +88,6 @@ const toggleExpand = async (rowId: number, rowRUC: string, rowFact: string) => {
   expandedRow.value = expandedRow.value === rowId ? null : rowId;
   ruc.value = rowRUC;
   factura.value = rowFact;
-  const response: RespuestaFechas = await get(
-    '/reclamo/reclamo_fuera_de_tiempo/',
-    {
-      id: rowId,
-    }
-  );
-
-  fechasEnReclamo.value = response.objetos[0];
-
   await mostrarLoginsAuditoria(rowRUC, rowFact);
 };
 
@@ -247,6 +235,12 @@ const handleEditarMotivo = (id: number, nroReclamo: number) => {
 const renovarMotivo = async () => {
   await whichQuery(page.value, pagination.value.rowsPerPage);
 };
+
+const handleRetraso = (id: number, delay: boolean) => {
+  editarRetraso.value = true;
+  idReclamo.value = id;
+  retraso.value = delay;
+};
 </script>
 
 <template>
@@ -258,6 +252,13 @@ const renovarMotivo = async () => {
     v-model:numReclamo="numReclamo"
     @renovarMotivo="renovarMotivo"
   />
+  <DialogoRetraso
+    v-model:editarRetraso="editarRetraso"
+    v-model:idReclamo="idReclamo"
+    v-model:retraso="retraso"
+    @renovarMotivo="renovarMotivo"
+  />
+
   <div>
     <q-dialog v-model="audit">
       <q-card class="audit-card">
@@ -295,6 +296,7 @@ const renovarMotivo = async () => {
         </q-card-section>
       </q-card>
     </q-dialog>
+
     <q-table
       flat
       bordered
@@ -475,32 +477,21 @@ const renovarMotivo = async () => {
 
             <div class="text-left">
               <strong>Reclamo fuera de tiempo: </strong>
-
               <q-badge
                 rounded
-                :color="
-                  fechasEnReclamo.reclamo_fuera_de_tiempo
-                    ? 'negative'
-                    : 'positive'
-                "
+                clickable
+                :color="props.row.retraso ? 'negative' : 'positive'"
+                @click="handleRetraso(props.row.nro_reclamo, props.row.retraso)"
               >
-                {{ fechasEnReclamo.reclamo_fuera_de_tiempo ? 'Sí' : 'No' }}
+                {{ props.row.retraso ? 'Sí' : 'No' }}
                 <q-tooltip>
                   <div>
                     Fecha Factura:
-                    {{
-                      moment(fechasEnReclamo.fecha_factura).format(
-                        'DD-MM-YYYY HH:mm'
-                      )
-                    }}
+                    {{ props.row.fecha_factura }}
                   </div>
                   <div>
                     Fecha Reclamo:
-                    {{
-                      moment(fechasEnReclamo.fecha_reclamo).format(
-                        'DD-MM-YYYY HH:mm'
-                      )
-                    }}
+                    {{ props.row.fecha_reclamo }}
                   </div>
                 </q-tooltip>
               </q-badge>
@@ -534,7 +525,7 @@ const renovarMotivo = async () => {
 
             <div class="row wrap">
               <div
-                class="q-ma-sm"
+                class="q-ml-none q-mr-sm q-my-sm"
                 v-for="(reclamo, index) in props.row.reclamos"
                 :key="index"
               >

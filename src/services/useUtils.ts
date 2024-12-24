@@ -32,6 +32,7 @@ export const procesarObjetos = (objetos: Objetos[]) => {
     respuesta_enproceso: objeto.respuesta_enproceso,
     respuesta_finalizado: objeto.respuesta_finalizado,
     reclamos: objeto.reclamos,
+    retraso: objeto.retraso,
   }));
 
   return mergeObjectsByNroReclamo(processedFilas);

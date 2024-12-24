@@ -173,6 +173,7 @@ export interface Filas {
   respuesta_enproceso: string | null;
   respuesta_finalizado: string | null;
   reclamos: Detalle[];
+  retraso: boolean;
 }
 
 export interface Objetos {
@@ -190,6 +191,7 @@ export interface Objetos {
   respuesta_finalizado: string | null;
   nombre_usuario: string | null;
   reclamos: Detalle[];
+  retraso: boolean;
 }
 
 export interface RespuestaBodega {
@@ -330,18 +332,6 @@ export interface AuditoriaObject {
   fpago: string;
   detalle: string;
   identicador: string;
-}
-
-export interface RespuestaFechas {
-  error: string;
-  mensaje: string;
-  objetos: FechasReclamo[];
-}
-
-export interface FechasReclamo {
-  fecha_reclamo: string;
-  fecha_factura: string;
-  reclamo_fuera_de_tiempo: boolean;
 }
 
 export interface Responsables {
