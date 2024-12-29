@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import ReportesComponent from './ReportesComponent.vue';
 import ReportesVendedoresComponent from './ReportesVendedoresComponent.vue';
+import ReportesResponsablesComponent from './ReportesResponsablesComponent.vue';
 
 // Data
 const tab = ref('');
@@ -29,6 +30,7 @@ const tab = ref('');
       >
         <q-tab name="reportes" label="General" />
         <q-tab name="vendedores" label="Por vendedores" />
+        <q-tab name="responsables" label="Por responsables" />
       </q-tabs>
 
       <q-separator />
@@ -39,6 +41,9 @@ const tab = ref('');
         </q-tab-panel>
         <q-tab-panel name="vendedores">
           <ReportesVendedoresComponent />
+        </q-tab-panel>
+        <q-tab-panel name="responsables">
+          <ReportesResponsablesComponent />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>

@@ -315,6 +315,17 @@ export interface Opcion {
   label: string;
   valor: number;
 }
+export interface RespuestaReporteResponsabilidad {
+  error: string;
+  mensaje: string;
+  objetos: ReporteResponsabilidad[];
+}
+
+export interface ReporteResponsabilidad {
+  responsabilidad: string;
+  nombre_motivo: string;
+  conteo_reclamos: number;
+}
 export interface AuditoriaObject {
   doc_codigo: number;
   doc_acro: string;
