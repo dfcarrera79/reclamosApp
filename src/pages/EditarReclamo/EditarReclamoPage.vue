@@ -126,11 +126,8 @@ const procesarFormulario = async () => {
       throw new Error('La respuesta del servidor no contiene productos.');
     }
 
-    // console.log('[PRODUCTOS]: ', JSON.stringify(productos.objetos));
-
     filasOriginales.value = productos.objetos.map((item: Item) => {
       let otra_info = item.conteo_pedido ? item.conteo_pedido : '';
-      // console.log('[OTRA INFO]: ', JSON.stringify(otra_info));
       if (otra_info.trim().length === 0) {
         otra_info = JSON.stringify([
           {
@@ -167,7 +164,6 @@ const procesarFormulario = async () => {
         otra_info: JSON.parse(otra_info),
       };
     });
-    // console.log('[FILAS ORIGINALES]: ', JSON.stringify(filas.value));
     originalRows = filasOriginales.value;
   } catch (error) {
     mostrarError(
@@ -248,8 +244,6 @@ const procesarEnvio = () => {
 };
 
 const agregarReclamo = async (event: Producto) => {
-  // console.log('[EVENT agregarReclamo EditarReclamo]: ', JSON.stringify(event));
-
   const existeProducto = detalles.value.some(
     (detalle) => detalle.producto.id === 10000
   );
@@ -309,9 +303,7 @@ const quitarFila = async (event: Producto) => {
 };
 
 const quitarReclamo = (event: number) => {
-  // console.log('[EVENT quitarReclamo EditarReclamo]: ', JSON.stringify(event));
   detalles.value = detalles.value.filter((el) => el.producto.id !== event);
-  // console.log('[DETALLES]: ', JSON.stringify(detalles.value));
 };
 
 const renovarComentario = (event: Detalle) => {
