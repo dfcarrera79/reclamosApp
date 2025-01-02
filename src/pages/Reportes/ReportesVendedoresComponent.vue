@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useAxios } from '../../services/useAxios';
 import { useMensajes } from '../../services/useMensajes';
 import VerificarVersion from '../../components/VerificarVersion.vue';
@@ -19,6 +19,7 @@ const reportes = ref<ReportePorVendedor[]>([]);
 const yearOptions = ref<number[]>([]);
 const { mostrarError } = useMensajes();
 const selectedMonth = ref<Meses | null>(null);
+const retraso = ref(false);
 
 // Methods
 const procesarFormulario = async () => {
@@ -35,6 +36,7 @@ const procesarFormulario = async () => {
     {
       mes: selectedMonth.value.codigo,
       anio: selectedYear.value,
+      retraso: retraso.value,
     }
   );
 
@@ -51,6 +53,10 @@ onMounted(() => {
   for (let year = currentYear - 2; year <= maxYear; year++) {
     yearOptions.value.push(year);
   }
+});
+
+watch(retraso, () => {
+  procesarFormulario();
 });
 </script>
 
@@ -104,6 +110,21 @@ onMounted(() => {
         </q-btn>
       </div>
     </q-form>
+
+    <div>
+      <q-item>
+        <q-item-section avatar>
+          <q-toggle keep-color v-model="retraso" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-grey-8">{{
+            retraso
+              ? 'Reclamos hechos fuera de tiempo'
+              : 'Reclamos hechos a tiempo'
+          }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </div>
 
     <div class="q-pa-md">
       <div v-for="(vendedor, index) in reportes" :key="index" class="q-mb-lg">

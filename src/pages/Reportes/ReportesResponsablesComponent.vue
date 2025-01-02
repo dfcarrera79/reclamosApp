@@ -143,9 +143,11 @@ watch(retraso, () => {
           <q-toggle keep-color v-model="retraso" />
         </q-item-section>
         <q-item-section>
-          <q-item-label class="text-grey-8"
-            >Reclamos hechos fuera de tiempo</q-item-label
-          >
+          <q-item-label class="text-grey-8">{{
+            retraso
+              ? 'Reclamos hechos fuera de tiempo'
+              : 'Reclamos hechos a tiempo'
+          }}</q-item-label>
         </q-item-section>
       </q-item>
     </div>
