@@ -51,3 +51,11 @@ export const obtenerArchivos = (detalles: Detalle[]): number[] => {
 
   return archivos;
 };
+
+export const allowedUsers = [
+  'dfcarrera',
+  'dmasache',
+  'aocampo',
+  'ewsanchez',
+  'drojas',
+];

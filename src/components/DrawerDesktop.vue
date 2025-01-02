@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
 import { useQuasar } from 'quasar';
+import { computed, inject, ref } from 'vue';
+import { allowedUsers } from '../utils/AppUtils';
 import { useAppStore } from '../stores/useAppStore';
 
 // Data
@@ -17,15 +18,6 @@ const reset = () => {
   appStore.hasta = null;
   appStore.factura = '';
 };
-
-// Lista de usuarios permitidos
-const allowedUsers = [
-  'dfcarrera',
-  'dmasache',
-  'aocampo',
-  'ewsanchez',
-  'drojas',
-];
 
 // Computed para verificar si el usuario está permitido
 const isUserAllowed = computed(() => {
