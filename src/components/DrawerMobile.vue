@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject } from 'vue';
+import { computed, inject } from 'vue';
 import { useQuasar } from 'quasar';
 import { useAppStore } from '../stores/useAppStore';
 
@@ -16,6 +16,20 @@ const reset = () => {
   appStore.hasta = null;
   appStore.factura = '';
 };
+
+// Lista de usuarios permitidos
+const allowedUsers = [
+  'dfcarrera',
+  'dmasache',
+  'aocampo',
+  'ewsanchez',
+  'drojas',
+];
+
+// Computed para verificar si el usuario está permitido
+const isUserAllowed = computed(() => {
+  return allowedUsers.includes(appStore.usuario.ruc_cliente);
+});
 </script>
 
 <template>
@@ -173,6 +187,7 @@ const reset = () => {
             @click="reset()"
             v-show="appStore.appCodigo === appStore.APP_USUARIO"
             active-class="my-menu-link"
+            v-if="isUserAllowed"
           >
             <q-item-section avatar>
               <q-icon name="inventory" color="grey-8" />
