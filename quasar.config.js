@@ -62,7 +62,12 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        IMAGE_PATH: process.env.IMAGE_PATH,
+        DOCUMENT_PATH: process.env.DOCUMENT_PATH,
+        API_URL: process.env.API_URL,
+        REPLACED_PATH: process.env.REPLACED_PATH,
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,

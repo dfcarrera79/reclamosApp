@@ -33,6 +33,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-development.env
-production.env
-development.env
+# local .env files
+.env.local*
+.env.dev
+.env.prod
