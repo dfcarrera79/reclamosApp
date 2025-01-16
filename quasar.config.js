@@ -77,10 +77,25 @@ module.exports = configure(function (ctx) {
       //     : 'https://apromedfarmaloja-cloud.com:3010/static/',
       // },
 
+      // env: {
+      //   API_URL: ctx.dev
+      //     ? 'http://localhost:3009/v1/reclamos'
+      //     : 'https://apromedfarmaloja-cloud.com:3010/v1/reclamos',
+      //   IMAGE_PATH: ctx.dev
+      //     ? 'C:\\Users\\dfcar\\Dropbox\\Developer\\Projects\\Reclamos\\emilia-apis-jsexpress\\public\\imagenes_reclamos\\'
+      //     : '/opt/app-reclamos/api/public/imagenes_reclamos/',
+      //   DOCUMENT_PATH: ctx.dev
+      //     ? 'C:\\Users\\dfcar\\Dropbox\\Developer\\Projects\\Reclamos\\emilia-apis-jsexpress\\public\\documentos\\'
+      //     : '/opt/app-reclamos/api/public/documentos/',
+      //   REPLACED_PATH: ctx.dev
+      //     ? 'http://localhost:3009/static/'
+      //     : 'https://apromedfarmaloja-cloud.com:3010/static/',
+      // },
+
       env: {
         API_URL: ctx.dev
           ? 'http://localhost:3009/v1/reclamos'
-          : 'https://apromedfarmaloja-cloud.com:3010/v1/reclamos',
+          : 'http://192.168.1.50:3009/v1/reclamos',
         IMAGE_PATH: ctx.dev
           ? 'C:\\Users\\dfcar\\Dropbox\\Developer\\Projects\\Reclamos\\emilia-apis-jsexpress\\public\\imagenes_reclamos\\'
           : '/opt/app-reclamos/api/public/imagenes_reclamos/',
@@ -89,23 +104,9 @@ module.exports = configure(function (ctx) {
           : '/opt/app-reclamos/api/public/documentos/',
         REPLACED_PATH: ctx.dev
           ? 'http://localhost:3009/static/'
-          : 'https://apromedfarmaloja-cloud.com:3010/static/',
+          : 'http://192.168.1.50:3009/static/',
       },
 
-      // env: {
-      //   API_URL: ctx.dev
-      //     ? 'http://localhost:3009/v1/reclamos'
-      //     : 'http://192.168.1.50:3009/v1/reclamos',
-      //   IMAGE_PATH: ctx.dev
-      //     ? 'C:\\Users\\dfcar\\Dropbox\\Developer\\Projects\\Reclamos\\emilia-apis-jsexpress\\public\\imagenes_reclamos\\'
-      //     : '/opt/app-reclamos/api/public/imagenes_reclamos/',
-      //   DOCUMENT_PATH: ctx.dev
-      //     ? 'C:\\Users\\dfcar\\Dropbox\\Developer\\Projects\\Reclamos\\emilia-apis-jsexpress\\public\\documentos\\'
-      //     : '/opt/app-reclamos/api/public/documentos/',
-      //   REPLACED_PATH: ctx.dev
-      //     ? 'http://192.168.1.50:3009/static/'
-      //     : 'https://apromedfarmaloja-cloud.com:3010/static/',
-      // },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
