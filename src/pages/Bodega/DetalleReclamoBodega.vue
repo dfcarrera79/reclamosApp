@@ -18,6 +18,7 @@ import { computed, ref, watch } from 'vue';
 import DialogoEstado from './DialogoEstado.vue';
 import DialogoMotivo from './DialogoMotivo.vue';
 import DialogoRetraso from './DialogoRetraso.vue';
+import DialogoComentario from './DialogoComentario.vue';
 import { useAxios } from '../../services/useAxios';
 import MotivosPrioridad from './MotivosPrioridad.vue';
 import { useAppStore } from '../../stores/useAppStore';
@@ -63,6 +64,8 @@ const ruc = ref('');
 const factura = ref('');
 
 const editarRetraso = ref(false);
+const editarComentario = ref(false);
+
 const idReclamo = ref(0);
 const retraso = ref(false);
 
@@ -241,6 +244,11 @@ const handleRetraso = (id: number, delay: boolean) => {
   idReclamo.value = id;
   retraso.value = delay;
 };
+
+const handleComentario = (id: number) => {
+  editarComentario.value = true;
+  idReclamo.value = id;
+};
 </script>
 
 <template>
@@ -256,6 +264,11 @@ const handleRetraso = (id: number, delay: boolean) => {
     v-model:editarRetraso="editarRetraso"
     v-model:idReclamo="idReclamo"
     v-model:retraso="retraso"
+    @renovarMotivo="renovarMotivo"
+  />
+  <DialogoComentario
+    v-model:editarComentario="editarComentario"
+    v-model:idReclamo="idReclamo"
     @renovarMotivo="renovarMotivo"
   />
 
@@ -495,6 +508,24 @@ const handleRetraso = (id: number, delay: boolean) => {
                   </div>
                 </q-tooltip>
               </q-badge>
+            </div>
+
+            <div class="text-left row">
+              <div class="q-pr-xs">
+                <q-btn
+                  size="xs"
+                  color="primary"
+                  round
+                  dense
+                  icon="edit"
+                  @click="handleComentario(props.row.nro_reclamo)"
+                >
+                  <q-tooltip>Editar el comentario</q-tooltip>
+                </q-btn>
+              </div>
+
+              <strong class="q-pr-sm">Comentario: </strong>
+              {{ props.row.comentario }}
             </div>
 
             <div class="text-left" v-show="estado !== 'PEN'">

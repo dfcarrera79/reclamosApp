@@ -174,6 +174,7 @@ export interface Filas {
   respuesta_finalizado: string | null;
   reclamos: Detalle[];
   retraso: boolean;
+  comentario: string;
 }
 
 export interface Objetos {
@@ -192,6 +193,7 @@ export interface Objetos {
   nombre_usuario: string | null;
   reclamos: Detalle[];
   retraso: boolean;
+  comentario: string;
 }
 
 export interface RespuestaBodega {
