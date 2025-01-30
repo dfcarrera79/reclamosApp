@@ -636,6 +636,7 @@ const handleComentario = (id: number) => {
         size="12px"
         v-model="page"
         :max="pagesNumber"
+        :max-pages="7"
         direction-links
         boundary-links
         icon-first="skip_previous"
