@@ -178,7 +178,9 @@ const reset = async () => {
 
   if (reclamosIDs.length > 0) {
     for (let reclamoID of reclamosIDs) {
-      insertarFila(reclamoID);
+      if (reclamoID !== 10000) {
+        insertarFila(reclamoID);
+      }
     }
   }
 
@@ -244,13 +246,15 @@ const procesarEnvio = () => {
 };
 
 const agregarReclamo = async (event: Producto) => {
-  const existeProducto = detalles.value.some(
-    (detalle) => detalle.producto.id === 10000
-  );
+  if (event.id === 10000) {
+    const existeProducto = detalles.value.some(
+      (detalle) => detalle.producto.id === 10000
+    );
 
-  if (existeProducto) {
-    mostrarError('Ya se ha ingresado un reclamo por auditoria', 'center');
-    return;
+    if (existeProducto) {
+      mostrarError('Ya se ha ingresado un reclamo por auditoria', 'center');
+      return;
+    }
   }
 
   let producto = await verificarProductoEnReclamo(event.id);
@@ -277,6 +281,10 @@ const agregarReclamo = async (event: Producto) => {
 };
 
 const insertarFila = (event: number) => {
+  if (event == 10000) {
+    return;
+  }
+
   const index = originalRows.findIndex((x) => x.id === event);
   const row = originalRows[index];
   const newRow = { ...row };
