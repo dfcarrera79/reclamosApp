@@ -18,7 +18,22 @@ const columnas: QTableProps['columns'] = [
   },
 ];
 
-/* defined props */
+let objetoAuditoria = {
+  id: 10000,
+  nombre: 'Reclamo por auditoria',
+  cantidad: 0,
+  otra_info: [
+    {
+      cantidad_x_uni: 0,
+      cantidad: 0,
+      lote: '',
+      fecha_vencimiento: '2100/12/31',
+      r_sanitario: '',
+      fecha_corta: false,
+      subtotal: 0,
+    },
+  ],
+};
 const mostrarAuditoria = ref(false);
 const filas = defineModel<Producto[]>('filas', { required: true });
 const auditoria = defineModel<AuditoriaObject[]>('auditoria', {
@@ -82,6 +97,24 @@ const pagination = {
               <strong class="text-weight-bold text-primary">Factura: </strong>
               {{ factura }}
             </div>
+            <q-btn
+              class="q-mt-sm"
+              outline
+              color="primary"
+              no-caps
+              dense
+              @click="
+                enviarReclamo(objetoAuditoria);
+                mostrarAuditoria = false;
+              "
+              v-show="appStore.appCodigo === appStore.APP_USUARIO"
+            >
+              <div class="row items-center no-wrap q-pa-none">
+                <div class="text-center text-caption">
+                  <strong>Agregar reclamo por auditoria</strong>
+                </div>
+              </div>
+            </q-btn>
           </div>
         </q-card-section>
 
